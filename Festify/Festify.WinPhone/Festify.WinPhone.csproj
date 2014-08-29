@@ -94,6 +94,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HTTPConfigurationProvider.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -104,6 +105,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SynchronizationService.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -159,6 +163,30 @@
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="UpdateControls">
+      <HintPath>..\..\packages\UpdateControls.2.3.1.0\lib\wp80\UpdateControls.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.Correspondence">
+      <HintPath>..\..\packages\Correspondence.2.2.1.0\lib\wp80\UpdateControls.Correspondence.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.Correspondence.BinaryHTTPClient">
+      <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\wp80\UpdateControls.Correspondence.BinaryHTTPClient.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.Correspondence.BinaryHTTPClient.Notification">
+      <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\wp8\UpdateControls.Correspondence.BinaryHTTPClient.Notification.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.Correspondence.Data">
+      <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\wp80\UpdateControls.Correspondence.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.Correspondence.FileStream">
+      <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\wp8\UpdateControls.Correspondence.FileStream.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.Correspondence.Memory">
+      <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\wp80\UpdateControls.Correspondence.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.XAML">
+      <HintPath>..\..\packages\UpdateControls.2.3.1.0\lib\wp80\UpdateControls.XAML.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\..\packages\Xamarin.Forms.1.2.2.6243\lib\WP80\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
@@ -168,6 +196,12 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.1.2.2.6243\lib\WP80\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Festify.Model\Festify.Model.csproj">
+      <Project>{09d0cacb-c031-425a-8bca-3dfdb2103868}</Project>
+      <Name>Festify.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Festify\Festify.projitems" Label="Shared" Condition="Exists('..\Festify\Festify.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

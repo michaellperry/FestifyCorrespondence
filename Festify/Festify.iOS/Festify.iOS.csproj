@@ -86,6 +86,13 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
+    <Reference Include="UpdateControls, Version=2.3.0.0, Culture=neutral, PublicKeyToken=19e83a8289e31a8f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\UpdateControls.2.3.1.0\lib\portable-net45+sl50+wp80+win80\UpdateControls.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.Correspondence">
+      <HintPath>..\..\packages\Correspondence.2.2.1.0\lib\MonoTouch\UpdateControls.Correspondence.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\..\packages\Xamarin.Forms.1.2.2.6243\lib\MonoTouch10\Xamarin.Forms.Core.dll</HintPath>
     </Reference>

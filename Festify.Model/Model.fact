@@ -1,0 +1,6 @@
+namespace Festify.Model;
+
+fact Individual {
+key:
+    string anonymousId;
+}
