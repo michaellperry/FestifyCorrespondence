@@ -13,6 +13,9 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Festify", "Festify\Festify\
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Festify\Festify\Festify.projitems*{63c2257f-c463-4199-959c-7dcbb06a693e}*SharedItemsImports = 4
+		Festify\Festify\Festify.projitems*{26a27cf6-1f76-41ae-b1bb-c01d46af99b8}*SharedItemsImports = 4
+		Festify\Festify\Festify.projitems*{2d5d9a93-27f8-4cd8-91e9-1da0731cd0e4}*SharedItemsImports = 4
 		Festify\Festify\Festify.projitems*{584219c9-96b6-438a-ac2c-b40e5f17ba3b}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
