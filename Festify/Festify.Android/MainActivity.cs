@@ -20,7 +20,7 @@ namespace Festify.Droid
 
             Xamarin.Forms.Forms.Init(this, bundle);
 
-            SetPage(App.GetMainPage());
+            SetPage(App.GetMainPage(new DispatchAdapter(this)));
         }
     }
 }

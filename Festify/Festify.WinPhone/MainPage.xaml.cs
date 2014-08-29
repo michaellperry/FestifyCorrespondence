@@ -20,7 +20,7 @@ namespace Festify.WinPhone
             InitializeComponent();
 
             Forms.Init();
-            Content = Festify.App.GetMainPage().ConvertPageToUIElement(this);
+            Content = Festify.App.GetMainPage(new DispatchAdapter()).ConvertPageToUIElement(this);
         }
     }
 }
