@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Festify.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +14,7 @@ namespace Festify
 		{
             UpdateScheduler.Initialize(a => dispatchAdapter.Invoke(a));
 
-            return new ContentPage
-			{
-				Content = new Label {
-					Text = "Hello, Forms !",
-					VerticalOptions = LayoutOptions.CenterAndExpand,
-					HorizontalOptions = LayoutOptions.CenterAndExpand,
-				},
-			};
+            return new MainPage();
 		}
 	}
 }
