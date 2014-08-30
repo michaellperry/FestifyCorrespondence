@@ -1,0 +1,76 @@
+digraph "Festify.Model"
+{
+    rankdir=BT
+    EnableToastNotification -> Individual
+    DisableToastNotification -> EnableToastNotification [label="  *"]
+    Conference__name -> Conference [color="red"]
+    Conference__name -> Conference__name [label="  *"]
+    Conference__conferenceSurvey -> Conference [color="red"]
+    Conference__conferenceSurvey -> Conference__conferenceSurvey [label="  *"]
+    Conference__conferenceSurvey -> Survey
+    Conference__mapUrl -> Conference [color="red"]
+    Conference__mapUrl -> Conference__mapUrl [label="  *"]
+    ConferenceSessionSurvey -> Conference [color="red"]
+    ConferenceSessionSurvey -> Survey
+    ConferenceSessionSurvey -> ConferenceSessionSurvey [label="  *"]
+    Attendee -> Conference
+    IndividualAttendee -> Individual [color="red"]
+    IndividualAttendee -> Attendee
+    Day -> Conference [color="red"]
+    Time -> Day
+    TimeDelete -> Time
+    TimeUndelete -> TimeDelete
+    Slot -> Attendee
+    Slot -> Time [color="red"]
+    Room -> Conference [color="red"]
+    Room__roomNumber -> Room
+    Room__roomNumber -> Room__roomNumber [label="  *"]
+    Track -> Conference [color="red"]
+    Speaker -> Conference [color="red"]
+    Speaker__imageUrl -> Speaker
+    Speaker__imageUrl -> Speaker__imageUrl [label="  *"]
+    Speaker__contact -> Speaker
+    Speaker__contact -> Speaker__contact [label="  *"]
+    Speaker__bio -> Speaker
+    Speaker__bio -> Speaker__bio [label="  *"]
+    Speaker__bio -> DocumentSegment [label="  *"]
+    ConferenceNotice -> Conference [color="red"]
+    Place -> Time
+    Place -> Room
+    Session -> Conference [color="red"]
+    Session -> Speaker
+    Session -> Track [label="  ?"]
+    Session__name -> Session
+    Session__name -> Session__name [label="  *"]
+    Session__description -> Session
+    Session__description -> Session__description [label="  *"]
+    Session__description -> DocumentSegment [label="  *"]
+    Session__level -> Session
+    Session__level -> Session__level [label="  *"]
+    Session__level -> Level
+    SessionDelete -> Session
+    SessionUndelete -> SessionDelete
+    SessionNotice -> Session [color="red"]
+    SessionPlace -> Session
+    SessionPlace -> Place
+    SessionPlace -> SessionPlace [label="  *"]
+    Schedule -> Slot
+    Schedule -> SessionPlace [color="red"]
+    ScheduleRemove -> Schedule
+    Survey -> RatingQuestion [label="  *"]
+    Survey -> EssayQuestion [label="  *"]
+    SessionEvaluation -> Schedule
+    SessionEvaluation -> Survey
+    SessionEvaluationCompleted -> ConferenceSessionSurvey [color="red"]
+    SessionEvaluationCompleted -> SessionEvaluation
+    SessionEvaluationCompleted -> SessionEvaluationRatingAnswer [label="  *"]
+    SessionEvaluationCompleted -> SessionEvaluationEssayAnswer [label="  *"]
+    SessionEvaluationRating -> SessionEvaluation
+    SessionEvaluationRating -> RatingQuestion
+    SessionEvaluationRatingAnswer -> SessionEvaluationRating
+    SessionEvaluationRatingAnswer -> SessionEvaluationRatingAnswer [label="  *"]
+    SessionEvaluationEssay -> SessionEvaluation
+    SessionEvaluationEssay -> EssayQuestion
+    SessionEvaluationEssayAnswer -> SessionEvaluationEssay
+    SessionEvaluationEssayAnswer -> SessionEvaluationEssayAnswer [label="  *"]
+}
