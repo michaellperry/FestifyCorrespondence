@@ -3,21 +3,20 @@ using Festify.Model;
 using UpdateControls.Correspondence;
 using UpdateControls.Correspondence.BinaryHTTPClient;
 using UpdateControls.Correspondence.Memory;
+using Festify.Logic;
 
 namespace Festify.Synchronization
 {
     public class SynchronizationService
     {
-        private SignDevice _device;
-        private DateSelectionModel _dateSelectionModel;
+        private Device _device;
 
         private MemoryStorageStrategy _storage;
 
         public void Initialize()
         {
-            _dateSelectionModel = new DateSelectionModel();
             _storage = new MemoryStorageStrategy();
-            _device = new SignDevice(_storage, _dateSelectionModel);
+            _device = new Device(_storage);
 
             var http = new HTTPConfigurationProvider();
             var communication = new BinaryHTTPAsynchronousCommunicationStrategy(http);
@@ -29,7 +28,7 @@ namespace Festify.Synchronization
 
             _device.Subscribe();
 
-            CreateInstallation();
+            CreateIndividual();
 
             _device.Community.BeginSending();
             _device.Community.BeginReceiving();
@@ -50,7 +49,7 @@ namespace Festify.Synchronization
             Debug.WriteLine("Fact added");
         }
 
-        public SignDevice Device
+        public Device Device
         {
             get { return _device; }
         }
@@ -60,14 +59,14 @@ namespace Festify.Synchronization
             get { return _device.Community; }
         }
 
-        public Installation Installation
+        public Individual Individual
         {
-            get { return _device.Installation; }
+            get { return _device.Individual; }
         }
 
-        private void CreateInstallation()
+        private void CreateIndividual()
         {
-            _device.CreateInstallation();
+            _device.CreateIndividual();
         }
     }
 }

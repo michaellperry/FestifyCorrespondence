@@ -61,6 +61,15 @@
     <Reference Include="UpdateControls.Correspondence">
       <HintPath>..\..\packages\Correspondence.2.2.1.0\lib\MonoAndroid\UpdateControls.Correspondence.dll</HintPath>
     </Reference>
+    <Reference Include="UpdateControls.Correspondence.BinaryHTTPClient">
+      <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\portable-net45+wp80+win80+MonoAndroid+MonoTouch\UpdateControls.Correspondence.BinaryHTTPClient.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.Correspondence.Data">
+      <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\portable-net45+sl5+wp80+win80+MonoAndroid+MonoTouch\UpdateControls.Correspondence.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.Correspondence.Memory">
+      <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\portable-net45+wp80+win80+MonoAndroid+MonoTouch\UpdateControls.Correspondence.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
       <HintPath>..\..\packages\Xamarin.Android.Support.v4.20.0.0.3\lib\MonoAndroid10\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>

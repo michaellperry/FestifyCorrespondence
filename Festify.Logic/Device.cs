@@ -9,7 +9,7 @@ using UpdateControls.Fields;
 
 namespace Festify.Logic
 {
-    public abstract class Device
+    public class Device
     {
         private const string ThisIndividual = "Festify.Individual.this";
         private static readonly Regex Punctuation = new Regex(@"[{}\-]");
@@ -47,12 +47,7 @@ namespace Festify.Logic
             }
         }
 
-        public abstract IEnumerable<Schedule> Schedules
-        {
-            get;
-        }
-
-        public void CreateInstallation()
+        public void CreateIndividual()
         {
             Community.Perform(async delegate
             {
@@ -66,7 +61,7 @@ namespace Festify.Logic
             });
         }
 
-        public void CreateInstallationDesignData()
+        public void CreateIndividualDesignData()
         {
             Community.Perform(async delegate
             {
