@@ -2,7 +2,7 @@ namespace Festify.Model;
 
 fact Individual {
 key:
-    string anonymousId;
+    unique;
 
 query:
 	Attendee* attendees {

@@ -91,6 +91,16 @@
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Festify.Logic\Festify.Logic.csproj">
+      <Project>{d1cae0e5-26b2-41ba-a7dd-3e04c28734e3}</Project>
+      <Name>Festify.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Festify.Model\Festify.Model.csproj">
+      <Project>{09d0cacb-c031-425a-8bca-3dfdb2103868}</Project>
+      <Name>Festify.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Festify\Festify.projitems" Label="Shared" Condition="Exists('..\Festify\Festify.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.1.2.2.6243\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.1.2.2.6243\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10\Xamarin.Forms.targets')" />

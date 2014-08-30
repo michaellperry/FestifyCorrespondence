@@ -110,7 +110,7 @@ namespace Festify.Model
 				{
 					using (BinaryReader output = new BinaryReader(data))
 					{
-						newFact._anonymousId = (string)_fieldSerializerByType[typeof(string)].ReadData(output);
+						newFact._unique = (Guid)_fieldSerializerByType[typeof(Guid)].ReadData(output);
 					}
 				}
 
@@ -120,7 +120,7 @@ namespace Festify.Model
 			public void WriteFactData(CorrespondenceFact obj, BinaryWriter output)
 			{
 				Individual fact = (Individual)obj;
-				_fieldSerializerByType[typeof(string)].WriteData(output, fact._anonymousId);
+				_fieldSerializerByType[typeof(Guid)].WriteData(output, fact._unique);
 			}
 
             public CorrespondenceFact GetUnloadedInstance()
@@ -136,7 +136,7 @@ namespace Festify.Model
 
 		// Type
 		internal static CorrespondenceFactType _correspondenceFactType = new CorrespondenceFactType(
-			"Festify.Model.Individual", 8);
+			"Festify.Model.Individual", 2);
 
 		protected override CorrespondenceFactType GetCorrespondenceFactType()
 		{
@@ -197,8 +197,10 @@ namespace Festify.Model
 
         // Predecessors
 
+        // Unique
+        private Guid _unique;
+
         // Fields
-        private string _anonymousId;
 
         // Results
         private Result<Attendee> _attendees;
@@ -206,11 +208,10 @@ namespace Festify.Model
 
         // Business constructor
         public Individual(
-            string anonymousId
             )
         {
+            _unique = Guid.NewGuid();
             InitializeResults();
-            _anonymousId = anonymousId;
         }
 
         // Hydration constructor
@@ -229,10 +230,8 @@ namespace Festify.Model
         // Predecessor access
 
         // Field access
-        public string AnonymousId
-        {
-            get { return _anonymousId; }
-        }
+		public Guid Unique { get { return _unique; } }
+
 
         // Query result access
         public Result<Attendee> Attendees

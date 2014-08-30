@@ -10,8 +10,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dependency\DependentExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dependency\DependentSubscription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dependency\MakeCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dependency\ViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDispatchOnUIThread.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Synchronization\HTTPConfigurationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Synchronization\SynchronizationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\SessionPage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />
   </ItemGroup>
 </Project>
