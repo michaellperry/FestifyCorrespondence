@@ -17,10 +17,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)IDispatchOnUIThread.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Synchronization\HTTPConfigurationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Synchronization\SynchronizationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TimeHeader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\SessionPage.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />
   </ItemGroup>
 </Project>

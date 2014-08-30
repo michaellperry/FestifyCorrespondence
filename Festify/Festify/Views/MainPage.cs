@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Festify.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -15,18 +16,23 @@ namespace Festify.Views
             };
             var label = new Label
             {
-                Text = "Main Page",
+                Text = "Times",
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
-            var button = new Button()
+            var list = new ListView();
+            list.SetBinding<MainViewModel>(
+                ListView.ItemsSourceProperty, vm => vm.Times);
+            list.ItemTemplate = new DataTemplate(() =>
             {
-                Text = "Session",
-                HorizontalOptions = LayoutOptions.CenterAndExpand
-            };
-            button.Clicked += button_Clicked;
+                var cell = new TextCell();
+                cell.SetBinding<TimeHeader>(TextCell.TextProperty, h => h.Label);
+                return cell;
+            });
+            //list.SetBinding<RoomSelectorScreen>(
+            //    ListView.SelectedItemProperty, s => s.SelectedRoom);
 
             stack.Children.Add(label);
-            stack.Children.Add(button);
+            stack.Children.Add(list);
             Content = stack;
         }
 
