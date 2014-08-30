@@ -14,7 +14,7 @@ namespace Festify
 		{
             UpdateScheduler.Initialize(a => dispatchAdapter.Invoke(a));
 
-            return new MainPage();
+            return new NavigationPage(new MainPage());
 		}
 	}
 }

@@ -9,12 +9,30 @@ namespace Festify.Views
     {
         public MainPage()
         {
-            Content = new Label
+            var stack = new StackLayout()
+            {
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+            var label = new Label
             {
                 Text = "Main Page",
-                VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
+            var button = new Button()
+            {
+                Text = "Session",
+                HorizontalOptions = LayoutOptions.CenterAndExpand
+            };
+            button.Clicked += button_Clicked;
+
+            stack.Children.Add(label);
+            stack.Children.Add(button);
+            Content = stack;
+        }
+
+        void button_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new SessionPage());
         }
     }
 }
