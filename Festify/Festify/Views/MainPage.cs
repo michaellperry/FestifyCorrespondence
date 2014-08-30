@@ -1,44 +1,50 @@
-﻿using Festify.ViewModels;
+﻿using Festify.Dependency;
+using Festify.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using UpdateControls;
+using UpdateControls.Collections;
+using UpdateControls.Fields;
 using Xamarin.Forms;
 
 namespace Festify.Views
 {
     public class MainPage : ContentPage
     {
-        public MainPage()
-        {
-            var stack = new StackLayout()
-            {
-                VerticalOptions = LayoutOptions.CenterAndExpand
-            };
-            var label = new Label
-            {
-                Text = "Times",
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-            };
-            var list = new ListView();
-            list.SetBinding<MainViewModel>(
-                ListView.ItemsSourceProperty, vm => vm.Times);
-            list.ItemTemplate = new DataTemplate(() =>
-            {
-                var cell = new TextCell();
-                cell.SetBinding<TimeHeader>(TextCell.TextProperty, h => h.Label);
-                return cell;
-            });
-            //list.SetBinding<RoomSelectorScreen>(
-            //    ListView.SelectedItemProperty, s => s.SelectedRoom);
+        private readonly MainViewModel _viewModel;
 
-            stack.Children.Add(label);
-            stack.Children.Add(list);
+        private List<DependentSubscription> _subscriptions = new List<DependentSubscription>();
+        
+        public MainPage(MainViewModel viewModel)
+        {
+            _viewModel = viewModel;
+
+            var stack = StackLayoutOf(() =>
+                _viewModel.Days.Select(d => new DayView(d)));
+            stack.VerticalOptions = LayoutOptions.FillAndExpand;
+
             Content = stack;
+        }
+
+        private StackLayout StackLayoutOf(Func<IEnumerable<View>> children)
+        {
+            var list = new StackLayout();
+            _subscriptions.Add(list.Repeat(children));
+            return list;
         }
 
         void button_Clicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new SessionPage());
+        }
+
+        protected override void OnDisappearing()
+        {
+            foreach (var s in _subscriptions)
+                s.Unsubscribe();
+            _subscriptions.Clear();
         }
     }
 }

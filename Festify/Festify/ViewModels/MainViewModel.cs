@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Festify.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel
     {
         private readonly Conference _conference;
         private readonly Individual _individual;
@@ -18,15 +18,14 @@ namespace Festify.ViewModels
             _individual = individual;
         }
 
-        public IEnumerable<TimeHeader> Times
+        public IEnumerable<DayHeader> Days
         {
             get
             {
                 return
                     from day in _conference.Days
-                    from time in day.Times
-                    orderby time.Start
-                    select new TimeHeader(time, _individual);
+                    orderby day.ConferenceDate
+                    select new DayHeader(day, _individual);
             }
         }
     }

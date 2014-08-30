@@ -20,10 +20,11 @@ namespace Festify
             var synchronizationService = new SynchronizationService();
             synchronizationService.Initialize();
 
-            var mainPage = new MainPage();
-            mainPage.BindingContext = new MainViewModel(
+            var viewModel = new MainViewModel(
                 synchronizationService.Device.Conference,
                 synchronizationService.Individual);
+            var mainPage = new MainPage(viewModel);
+
             return new NavigationPage(mainPage);
         }
 	}
