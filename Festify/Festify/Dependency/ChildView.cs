@@ -5,25 +5,30 @@ using Xamarin.Forms;
 
 namespace Festify.Dependency
 {
-    public class ChildView<TChild> : IDisposable
+    public class ChildView<TItem, TChild> : IDisposable
         where TChild : View
     {
+        private readonly TItem _item;
         private readonly Layout<TChild> _container;
-        private readonly TChild _child;
+        private readonly Func<TItem, TChild> _createChild;
 
+        private TChild _child = null;
         private bool _inContainer = false;
-
-        public ChildView(Layout<TChild> container, TChild child)
+        
+        public ChildView(TItem item, Layout<TChild> container, Func<TItem, TChild> createChild)
         {
-            _child = child;
-            System.Diagnostics.Debug.WriteLine(String.Format("+ Child {0} {1}", _child, _child.GetHashCode()));
+            _item = item;
             _container = container;
+            _createChild = createChild;
+
+            System.Diagnostics.Debug.WriteLine(String.Format("+ Child {0} {1}", _item, _item.GetHashCode()));
         }
 
         public void InsertAt(int index)
         {
             if (!_inContainer)
             {
+                _child = _createChild(_item);
                 _container.Children.Insert(index, _child);
                 _inContainer = true;
             }
@@ -36,14 +41,14 @@ namespace Festify.Dependency
 
         public void Dispose()
         {
-            System.Diagnostics.Debug.WriteLine(String.Format("- Child {0} {1}", _child, _child.GetHashCode()));
             if (_inContainer)
             {
                 _container.Children.Remove(_child);
+                var disposable = _child as IDisposable;
+                if (disposable != null)
+                    disposable.Dispose();
             }
-            var disposable = _child as IDisposable;
-            if (disposable != null)
-                disposable.Dispose();
+            System.Diagnostics.Debug.WriteLine(String.Format("- Child {0} {1}", _item, _item.GetHashCode()));
         }
 
         public override bool Equals(object obj)
@@ -51,16 +56,16 @@ namespace Festify.Dependency
             if (this == obj)
                 return true;
 
-            var that = obj as ChildView<TChild>;
+            var that = obj as ChildView<TItem, TChild>;
             if (that == null)
                 return false;
 
-            return Object.Equals(this._child, that._child);
+            return Object.Equals(this._item, that._item);
         }
 
         public override int GetHashCode()
         {
-            return _child.GetHashCode();
+            return _item.GetHashCode();
         }
     }
 }

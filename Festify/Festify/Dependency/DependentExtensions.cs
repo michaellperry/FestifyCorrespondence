@@ -34,9 +34,9 @@ namespace Festify
             Func<TItem, TView> view)
             where TView : View
         {
-            var depTimes = new DependentList<ChildView<TView>>(() =>
-                items().Select(c => new ChildView<TView>(container, view(c))));
-            var subscription = depTimes.Subscribe(delegate(IEnumerable<ChildView<TView>> views)
+            var depTimes = new DependentList<ChildView<TItem, TView>>(() =>
+                items().Select(c => new ChildView<TItem, TView>(c, container, view)));
+            var subscription = depTimes.Subscribe(delegate(IEnumerable<ChildView<TItem, TView>> views)
             {
                 int i = 0;
                 foreach (var v in views)
