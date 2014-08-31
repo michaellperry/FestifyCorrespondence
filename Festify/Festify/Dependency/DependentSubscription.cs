@@ -17,7 +17,7 @@ namespace Festify.Dependency
             OnInvalidated();
         }
 
-        public void Unsubscribe()
+        public virtual void Unsubscribe()
         {
             _dependent.Invalidated -= OnInvalidated;
         }

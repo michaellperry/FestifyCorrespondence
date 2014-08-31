@@ -1,3 +1,4 @@
+using Festify.Dependency;
 using Festify.Model;
 using Festify.ViewModels;
 using System;
@@ -8,9 +9,11 @@ using Xamarin.Forms;
 
 namespace Festify.Views
 {
-    public class TimeView : Grid
+    public class TimeView : Grid, IDisposable
     {
         private readonly TimeHeader _viewModel;
+
+        private ChildManager _childManager = new ChildManager();
 
         public TimeView(TimeHeader viewModel)
         {
@@ -23,17 +26,12 @@ namespace Festify.Views
             };
 
             var label = new Label();
-            label.BindText(() => _viewModel.Label);
+            _childManager.Add(label.BindText(() => _viewModel.Label));
             Children.Add(label, 0, 0);
 
             var details = new StackLayout();
-            details.Repeat(() => _viewModel.Sessions, s => new SessionView(s));
+            _childManager.Add(details.Repeat(() => _viewModel.Sessions, s => new SessionView(s)));
             Children.Add(details, 1, 0);
-        }
-
-        public TimeHeader ViewModel
-        {
-            get { return _viewModel; }
         }
 
         public override bool Equals(object obj)
@@ -51,6 +49,11 @@ namespace Festify.Views
         public override int GetHashCode()
         {
             return _viewModel.GetHashCode();
+        }
+
+        public void Dispose()
+        {
+            _childManager.DisposeAll();
         }
     }
 }

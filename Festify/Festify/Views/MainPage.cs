@@ -14,19 +14,21 @@ namespace Festify.Views
     public class MainPage : ContentPage
     {
         private readonly MainViewModel _viewModel;
+
+        private ChildManager _childManager = new ChildManager();
         
         public MainPage(MainViewModel viewModel)
         {
             _viewModel = viewModel;
 
             var exception = new Label();
-            exception.BindText(() => _viewModel.Exception);
+            _childManager.Add(exception.BindText(() => _viewModel.Exception));
 
             var title = new Label();
-            title.BindText(() => _viewModel.Title);
+            _childManager.Add(title.BindText(() => _viewModel.Title));
 
             var days = new StackLayout();
-            days.Repeat(() => _viewModel.Days, d => new DayView(d));
+            _childManager.Add(days.Repeat(() => _viewModel.Days, d => new DayView(d)));
             days.VerticalOptions = LayoutOptions.FillAndExpand;
 
             var content = new StackLayout
@@ -47,7 +49,7 @@ namespace Festify.Views
 
         protected override void OnDisappearing()
         {
-            base.OnDisappearing();
+            _childManager.DisposeAll();
         }
     }
 }

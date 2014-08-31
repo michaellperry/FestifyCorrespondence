@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 using Festify.ViewModels;
+using Festify.Dependency;
 
 namespace Festify.Views
 {
-    public class SessionView : Grid
+    public class SessionView : Grid, IDisposable
     {
         private readonly SessionHeader _viewModel;
+
+        private ChildManager _childManager = new ChildManager();
 
         public SessionView(SessionHeader viewModel)
         {
@@ -28,19 +31,19 @@ namespace Festify.Views
             };
 
             var image = new Image();
-            image.BindSource(() => _viewModel.Image);
+            _childManager.Add(image.BindSource(() => _viewModel.Image));
             Children.Add(image, 0, 1, 0, 2);
 
             var title = new Label();
-            title.BindText(() => _viewModel.Title);
+            _childManager.Add(title.BindText(() => _viewModel.Title));
             Children.Add(title, 1, 3, 0, 1);
 
             var speaker = new Label();
-            speaker.BindText(() => _viewModel.Speaker);
+            _childManager.Add(speaker.BindText(() => _viewModel.Speaker));
             Children.Add(speaker, 1, 1);
 
             var room = new Label();
-            room.BindText(() => _viewModel.Room);
+            _childManager.Add(room.BindText(() => _viewModel.Room));
             Children.Add(room, 2, 1);
         }
 
@@ -59,6 +62,11 @@ namespace Festify.Views
         public override int GetHashCode()
         {
             return _viewModel.GetHashCode();
+        }
+
+        public void Dispose()
+        {
+            _childManager.DisposeAll();
         }
     }
 }

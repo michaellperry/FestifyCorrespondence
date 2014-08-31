@@ -23,8 +23,8 @@ namespace Festify
             this DependentList<T> dependent,
             Action<IEnumerable<T>> whenChanged)
         {
-            return new DependentSubscription(
-                dependent.DependentSentry,
+            return new DependentListSubscription<T>(
+                dependent,
                 () => whenChanged(dependent));
         }
 

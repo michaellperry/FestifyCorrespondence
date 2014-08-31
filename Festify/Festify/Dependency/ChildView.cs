@@ -16,6 +16,7 @@ namespace Festify.Dependency
         public ChildView(Layout<TChild> container, TChild child)
         {
             _child = child;
+            System.Diagnostics.Debug.WriteLine(String.Format("+ Child {0} {1}", _child, _child.GetHashCode()));
             _container = container;
         }
 
@@ -35,8 +36,14 @@ namespace Festify.Dependency
 
         public void Dispose()
         {
+            System.Diagnostics.Debug.WriteLine(String.Format("- Child {0} {1}", _child, _child.GetHashCode()));
             if (_inContainer)
+            {
                 _container.Children.Remove(_child);
+            }
+            var disposable = _child as IDisposable;
+            if (disposable != null)
+                disposable.Dispose();
         }
 
         public override bool Equals(object obj)
