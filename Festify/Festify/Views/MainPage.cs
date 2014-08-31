@@ -44,5 +44,10 @@ namespace Festify.Views
         {
             Navigation.PushAsync(new SessionPage());
         }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+        }
     }
 }

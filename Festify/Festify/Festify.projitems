@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dependency\ChildView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dependency\DependentExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dependency\DependentSubscription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dependency\MakeCommand.cs" />
