@@ -20,14 +20,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)IDispatchOnUIThread.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Synchronization\HTTPConfigurationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Synchronization\SynchronizationService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DayHeader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SessionHeader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TimeHeader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\DayView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\MainPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\SessionPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\SessionView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\TimeView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\DayHeader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\MainViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\SessionHeader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\TimeHeader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Main\DayView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Main\MainPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Main\SessionPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Main\SessionView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Main\TimeView.cs" />
   </ItemGroup>
 </Project>

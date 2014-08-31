@@ -1,11 +1,9 @@
-﻿using Festify.Dependency;
-using Festify.Model;
+﻿using Festify.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Festify.ViewModels
+namespace Festify.ViewModels.Main
 {
     public class DayHeader
     {

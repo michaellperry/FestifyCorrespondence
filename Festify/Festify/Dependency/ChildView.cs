@@ -20,8 +20,6 @@ namespace Festify.Dependency
             _item = item;
             _container = container;
             _createChild = createChild;
-
-            System.Diagnostics.Debug.WriteLine(String.Format("+ Child {0} {1}", _item, _item.GetHashCode()));
         }
 
         public void InsertAt(int index)
@@ -48,7 +46,6 @@ namespace Festify.Dependency
                 if (disposable != null)
                     disposable.Dispose();
             }
-            System.Diagnostics.Debug.WriteLine(String.Format("- Child {0} {1}", _item, _item.GetHashCode()));
         }
 
         public override bool Equals(object obj)

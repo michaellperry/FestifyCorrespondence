@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace Festify.Views
+namespace Festify.Views.Main
 {
     public class SessionPage : ContentPage
     {

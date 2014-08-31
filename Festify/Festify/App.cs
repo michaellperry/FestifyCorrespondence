@@ -1,13 +1,8 @@
-﻿using Festify.ViewModels;
-using Festify.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Festify.Synchronization;
+using Festify.ViewModels.Main;
+using Festify.Views.Main;
 using UpdateControls;
 using Xamarin.Forms;
-using Festify.Model;
-using Festify.Synchronization;
 
 namespace Festify
 {

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Festify.Dependency;
+using Festify.ViewModels.Main;
+using System;
 using Xamarin.Forms;
-using Festify.ViewModels;
-using Festify.Dependency;
 
-namespace Festify.Views
+namespace Festify.Views.Main
 {
     public class SessionView : Grid, IDisposable
     {

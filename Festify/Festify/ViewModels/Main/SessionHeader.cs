@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Festify.Model;
 
-namespace Festify.ViewModels
+namespace Festify.ViewModels.Main
 {
     public class SessionHeader
     {

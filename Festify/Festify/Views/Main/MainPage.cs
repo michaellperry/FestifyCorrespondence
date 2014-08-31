@@ -1,15 +1,9 @@
 ﻿using Festify.Dependency;
-using Festify.ViewModels;
+using Festify.ViewModels.Main;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UpdateControls;
-using UpdateControls.Collections;
-using UpdateControls.Fields;
 using Xamarin.Forms;
 
-namespace Festify.Views
+namespace Festify.Views.Main
 {
     public class MainPage : ContentPage
     {

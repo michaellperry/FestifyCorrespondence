@@ -1,13 +1,9 @@
 using Festify.Dependency;
-using Festify.Model;
-using Festify.ViewModels;
+using Festify.ViewModels.Main;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Xamarin.Forms;
 
-namespace Festify.Views
+namespace Festify.Views.Main
 {
     public class TimeView : Grid, IDisposable
     {

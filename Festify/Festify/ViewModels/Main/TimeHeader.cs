@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Festify.ViewModels
+namespace Festify.ViewModels.Main
 {
     public class TimeHeader : ViewModelBase
     {
