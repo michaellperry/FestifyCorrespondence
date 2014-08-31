@@ -28,23 +28,6 @@ namespace Festify.Views
             Children.Add(list);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (this == obj)
-                return true;
-
-            var that = obj as DayView;
-            if (that == null)
-                return false;
-
-            return Object.Equals(this._header, that._header);
-        }
-
-        public override int GetHashCode()
-        {
-            return _header.GetHashCode();
-        }
-
         public void Dispose()
         {
             _childManager.DisposeAll();

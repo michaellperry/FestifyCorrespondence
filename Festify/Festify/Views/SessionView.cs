@@ -47,23 +47,6 @@ namespace Festify.Views
             Children.Add(room, 2, 1);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (this == obj)
-                return true;
-
-            var that = obj as SessionView;
-            if (that == null)
-                return false;
-
-            return Object.Equals(this._viewModel, that._viewModel);
-        }
-
-        public override int GetHashCode()
-        {
-            return _viewModel.GetHashCode();
-        }
-
         public void Dispose()
         {
             _childManager.DisposeAll();

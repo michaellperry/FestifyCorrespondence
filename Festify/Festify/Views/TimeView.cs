@@ -34,23 +34,6 @@ namespace Festify.Views
             Children.Add(details, 1, 0);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (this == obj)
-                return true;
-
-            var that = obj as TimeView;
-            if (that == null)
-                return false;
-
-            return Object.Equals(this._viewModel, that._viewModel);
-        }
-
-        public override int GetHashCode()
-        {
-            return _viewModel.GetHashCode();
-        }
-
         public void Dispose()
         {
             _childManager.DisposeAll();
