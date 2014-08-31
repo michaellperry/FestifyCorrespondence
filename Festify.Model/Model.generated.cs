@@ -38,6 +38,8 @@ digraph "Festify.Model"
     Room__roomNumber -> Room__roomNumber [label="  *"]
     Track -> Conference [color="red"]
     Speaker -> Conference [color="red"]
+    Speaker__name -> Speaker
+    Speaker__name -> Speaker__name [label="  *"]
     Speaker__imageUrl -> Speaker
     Speaker__imageUrl -> Speaker__imageUrl [label="  *"]
     Speaker__contact -> Speaker
@@ -3398,7 +3400,7 @@ namespace Festify.Model
 				{
 					using (BinaryReader output = new BinaryReader(data))
 					{
-						newFact._name = (string)_fieldSerializerByType[typeof(string)].ReadData(output);
+						newFact._unique = (Guid)_fieldSerializerByType[typeof(Guid)].ReadData(output);
 					}
 				}
 
@@ -3408,7 +3410,7 @@ namespace Festify.Model
 			public void WriteFactData(CorrespondenceFact obj, BinaryWriter output)
 			{
 				Speaker fact = (Speaker)obj;
-				_fieldSerializerByType[typeof(string)].WriteData(output, fact._name);
+				_fieldSerializerByType[typeof(Guid)].WriteData(output, fact._unique);
 			}
 
             public CorrespondenceFact GetUnloadedInstance()
@@ -3424,7 +3426,7 @@ namespace Festify.Model
 
 		// Type
 		internal static CorrespondenceFactType _correspondenceFactType = new CorrespondenceFactType(
-			"Festify.Model.Speaker", 1099669676);
+			"Festify.Model.Speaker", -1711482154);
 
 		protected override CorrespondenceFactType GetCorrespondenceFactType()
 		{
@@ -3467,6 +3469,19 @@ namespace Festify.Model
         }
 
         // Queries
+        private static Query _cacheQueryName;
+
+        public static Query GetQueryName()
+		{
+            if (_cacheQueryName == null)
+            {
+			    _cacheQueryName = new Query()
+    				.JoinSuccessors(Speaker__name.GetRoleSpeaker(), Condition.WhereIsEmpty(Speaker__name.GetQueryIsCurrent())
+				)
+                ;
+            }
+            return _cacheQueryName;
+		}
         private static Query _cacheQueryImageUrl;
 
         public static Query GetQueryImageUrl()
@@ -3528,10 +3543,13 @@ namespace Festify.Model
         // Predecessors
         private PredecessorObj<Conference> _conference;
 
+        // Unique
+        private Guid _unique;
+
         // Fields
-        private string _name;
 
         // Results
+        private Result<Speaker__name> _name;
         private Result<Speaker__imageUrl> _imageUrl;
         private Result<Speaker__contact> _contact;
         private Result<Speaker__bio> _bio;
@@ -3540,12 +3558,11 @@ namespace Festify.Model
         // Business constructor
         public Speaker(
             Conference conference
-            ,string name
             )
         {
+            _unique = Guid.NewGuid();
             InitializeResults();
             _conference = new PredecessorObj<Conference>(this, GetRoleConference(), conference);
-            _name = name;
         }
 
         // Hydration constructor
@@ -3558,6 +3575,7 @@ namespace Festify.Model
         // Result initializer
         private void InitializeResults()
         {
+            _name = new Result<Speaker__name>(this, GetQueryName(), Speaker__name.GetUnloadedInstance, Speaker__name.GetNullInstance);
             _imageUrl = new Result<Speaker__imageUrl>(this, GetQueryImageUrl(), Speaker__imageUrl.GetUnloadedInstance, Speaker__imageUrl.GetNullInstance);
             _contact = new Result<Speaker__contact>(this, GetQueryContact(), Speaker__contact.GetUnloadedInstance, Speaker__contact.GetNullInstance);
             _bio = new Result<Speaker__bio>(this, GetQueryBio(), Speaker__bio.GetUnloadedInstance, Speaker__bio.GetNullInstance);
@@ -3571,10 +3589,8 @@ namespace Festify.Model
         }
 
         // Field access
-        public string Name
-        {
-            get { return _name; }
-        }
+		public Guid Unique { get { return _unique; } }
+
 
         // Query result access
         public Result<SessionPlace> AvailableSessions
@@ -3583,6 +3599,21 @@ namespace Festify.Model
         }
 
         // Mutable property access
+        public TransientDisputable<Speaker__name, string> Name
+        {
+            get { return _name.AsTransientDisputable(fact => fact.Value); }
+			set
+			{
+                Community.Perform(async delegate()
+                {
+                    var current = (await _name.EnsureAsync()).ToList();
+                    if (current.Count != 1 || !object.Equals(current[0].Value, value.Value))
+                    {
+                        await Community.AddFactAsync(new Speaker__name(this, _name, value.Value));
+                    }
+                });
+			}
+        }
         public TransientDisputable<Speaker__imageUrl, string> ImageUrl
         {
             get { return _imageUrl.AsTransientDisputable(fact => fact.Value); }
@@ -3629,6 +3660,182 @@ namespace Festify.Model
 				});
 			}
         }
+    }
+    
+    public partial class Speaker__name : CorrespondenceFact
+    {
+		// Factory
+		internal class CorrespondenceFactFactory : ICorrespondenceFactFactory
+		{
+			private IDictionary<Type, IFieldSerializer> _fieldSerializerByType;
+
+			public CorrespondenceFactFactory(IDictionary<Type, IFieldSerializer> fieldSerializerByType)
+			{
+				_fieldSerializerByType = fieldSerializerByType;
+			}
+
+			public CorrespondenceFact CreateFact(FactMemento memento)
+			{
+				Speaker__name newFact = new Speaker__name(memento);
+
+				// Create a memory stream from the memento data.
+				using (MemoryStream data = new MemoryStream(memento.Data))
+				{
+					using (BinaryReader output = new BinaryReader(data))
+					{
+						newFact._value = (string)_fieldSerializerByType[typeof(string)].ReadData(output);
+					}
+				}
+
+				return newFact;
+			}
+
+			public void WriteFactData(CorrespondenceFact obj, BinaryWriter output)
+			{
+				Speaker__name fact = (Speaker__name)obj;
+				_fieldSerializerByType[typeof(string)].WriteData(output, fact._value);
+			}
+
+            public CorrespondenceFact GetUnloadedInstance()
+            {
+                return Speaker__name.GetUnloadedInstance();
+            }
+
+            public CorrespondenceFact GetNullInstance()
+            {
+                return Speaker__name.GetNullInstance();
+            }
+		}
+
+		// Type
+		internal static CorrespondenceFactType _correspondenceFactType = new CorrespondenceFactType(
+			"Festify.Model.Speaker__name", 443104904);
+
+		protected override CorrespondenceFactType GetCorrespondenceFactType()
+		{
+			return _correspondenceFactType;
+		}
+
+        // Null and unloaded instances
+        public static Speaker__name GetUnloadedInstance()
+        {
+            return new Speaker__name((FactMemento)null) { IsLoaded = false };
+        }
+
+        public static Speaker__name GetNullInstance()
+        {
+            return new Speaker__name((FactMemento)null) { IsNull = true };
+        }
+
+        // Ensure
+        public Task<Speaker__name> EnsureAsync()
+        {
+            if (_loadedTask != null)
+                return _loadedTask.ContinueWith(t => (Speaker__name)t.Result);
+            else
+                return Task.FromResult(this);
+        }
+
+        // Roles
+        private static Role _cacheRoleSpeaker;
+        public static Role GetRoleSpeaker()
+        {
+            if (_cacheRoleSpeaker == null)
+            {
+                _cacheRoleSpeaker = new Role(new RoleMemento(
+			        _correspondenceFactType,
+			        "speaker",
+			        Speaker._correspondenceFactType,
+			        false));
+            }
+            return _cacheRoleSpeaker;
+        }
+        private static Role _cacheRolePrior;
+        public static Role GetRolePrior()
+        {
+            if (_cacheRolePrior == null)
+            {
+                _cacheRolePrior = new Role(new RoleMemento(
+			        _correspondenceFactType,
+			        "prior",
+			        Speaker__name._correspondenceFactType,
+			        false));
+            }
+            return _cacheRolePrior;
+        }
+
+        // Queries
+        private static Query _cacheQueryIsCurrent;
+
+        public static Query GetQueryIsCurrent()
+		{
+            if (_cacheQueryIsCurrent == null)
+            {
+			    _cacheQueryIsCurrent = new Query()
+		    		.JoinSuccessors(Speaker__name.GetRolePrior())
+                ;
+            }
+            return _cacheQueryIsCurrent;
+		}
+
+        // Predicates
+        public static Condition IsCurrent = Condition.WhereIsEmpty(GetQueryIsCurrent());
+
+        // Predecessors
+        private PredecessorObj<Speaker> _speaker;
+        private PredecessorList<Speaker__name> _prior;
+
+        // Fields
+        private string _value;
+
+        // Results
+
+        // Business constructor
+        public Speaker__name(
+            Speaker speaker
+            ,IEnumerable<Speaker__name> prior
+            ,string value
+            )
+        {
+            InitializeResults();
+            _speaker = new PredecessorObj<Speaker>(this, GetRoleSpeaker(), speaker);
+            _prior = new PredecessorList<Speaker__name>(this, GetRolePrior(), prior);
+            _value = value;
+        }
+
+        // Hydration constructor
+        private Speaker__name(FactMemento memento)
+        {
+            InitializeResults();
+            _speaker = new PredecessorObj<Speaker>(this, GetRoleSpeaker(), memento, Speaker.GetUnloadedInstance, Speaker.GetNullInstance);
+            _prior = new PredecessorList<Speaker__name>(this, GetRolePrior(), memento, Speaker__name.GetUnloadedInstance, Speaker__name.GetNullInstance);
+        }
+
+        // Result initializer
+        private void InitializeResults()
+        {
+        }
+
+        // Predecessor access
+        public Speaker Speaker
+        {
+            get { return IsNull ? Speaker.GetNullInstance() : _speaker.Fact; }
+        }
+        public PredecessorList<Speaker__name> Prior
+        {
+            get { return _prior; }
+        }
+
+        // Field access
+        public string Value
+        {
+            get { return _value; }
+        }
+
+        // Query result access
+
+        // Mutable property access
+
     }
     
     public partial class Speaker__imageUrl : CorrespondenceFact
@@ -8264,6 +8471,9 @@ namespace Festify.Model
 				new FactMetadata(new List<CorrespondenceFactType> { Speaker._correspondenceFactType }));
 			community.AddQuery(
 				Speaker._correspondenceFactType,
+				Speaker.GetQueryName().QueryDefinition);
+			community.AddQuery(
+				Speaker._correspondenceFactType,
 				Speaker.GetQueryImageUrl().QueryDefinition);
 			community.AddQuery(
 				Speaker._correspondenceFactType,
@@ -8274,6 +8484,13 @@ namespace Festify.Model
 			community.AddQuery(
 				Speaker._correspondenceFactType,
 				Speaker.GetQueryAvailableSessions().QueryDefinition);
+			community.AddType(
+				Speaker__name._correspondenceFactType,
+				new Speaker__name.CorrespondenceFactFactory(fieldSerializerByType),
+				new FactMetadata(new List<CorrespondenceFactType> { Speaker__name._correspondenceFactType }));
+			community.AddQuery(
+				Speaker__name._correspondenceFactType,
+				Speaker__name.GetQueryIsCurrent().QueryDefinition);
 			community.AddType(
 				Speaker__imageUrl._correspondenceFactType,
 				new Speaker__imageUrl.CorrespondenceFactFactory(fieldSerializerByType),

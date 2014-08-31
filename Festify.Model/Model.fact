@@ -246,13 +246,14 @@ query:
 
 fact Speaker {
 key:
+    unique;
     publish Conference conference;
-    string name;
 
 mutable:
-	string imageUrl;
-	string contact;
-	DocumentSegment* bio;
+    string name;
+    string imageUrl;
+    string contact;
+    DocumentSegment* bio;
 
 query:
 	SessionPlace* availableSessions {

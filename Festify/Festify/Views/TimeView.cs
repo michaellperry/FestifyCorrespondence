@@ -26,8 +26,8 @@ namespace Festify.Views
             label.BindText(() => _viewModel.Label);
             Children.Add(label, 0, 0);
 
-            var details = new Label();
-            details.Text = "Breakout Session";
+            var details = new StackLayout();
+            details.Repeat(() => _viewModel.Sessions, s => new SessionView(s));
             Children.Add(details, 1, 0);
         }
 

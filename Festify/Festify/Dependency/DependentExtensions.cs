@@ -104,5 +104,13 @@ namespace Festify
             var dependent = new Dependent<string>(text);
             return dependent.Subscribe(t => control.Text = t);
         }
+
+        public static DependentSubscription BindSource(
+            this Image control,
+            Func<string> source)
+        {
+            var dependent = new Dependent<string>(source);
+            return dependent.Subscribe(s => control.Source = s);
+        }
     }
 }

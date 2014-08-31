@@ -28,6 +28,15 @@ namespace Festify.ViewModels
             get { return _time.Start.ToLocalTime().ToShortTimeString(); }
         }
 
+        public IEnumerable<SessionHeader> Sessions
+        {
+            get
+            {
+                return
+                    from sessionPlace in _time.AvailableSessions
+                    select new SessionHeader(sessionPlace, _individual);
+            }
+        }
         public override bool Equals(object obj)
         {
             if (this == obj)

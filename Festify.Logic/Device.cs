@@ -106,22 +106,38 @@ namespace Festify.Logic
 
         private async Task CreateTestData(Conference conference)
         {
+            ICommunity community = conference.Community;
+
             conference.Name = "Dallas TechFest 2014";
 
-            var day = await conference.Community.AddFactAsync(new Day(conference,
+            var day = await community.AddFactAsync(new Day(conference,
                 new DateTime(2014, 10, 10, 0, 0, 0, DateTimeKind.Utc)));
-            await day.Community.AddFactAsync(new Time(day,
+            var morning = await community.AddFactAsync(new Time(day,
                 new DateTime(2014, 10, 10, 9, 0, 0).ToUniversalTime()));
-            await day.Community.AddFactAsync(new Time(day,
+            await community.AddFactAsync(new Time(day,
                 new DateTime(2014, 10, 10, 10, 30, 0).ToUniversalTime()));
-            await day.Community.AddFactAsync(new Time(day,
+            var noon = await community.AddFactAsync(new Time(day,
                 new DateTime(2014, 10, 10, 12, 0, 0).ToUniversalTime()));
-            await day.Community.AddFactAsync(new Time(day,
+            var nap = await community.AddFactAsync(new Time(day,
                 new DateTime(2014, 10, 10, 13, 0, 0).ToUniversalTime()));
-            await day.Community.AddFactAsync(new Time(day,
+            await community.AddFactAsync(new Time(day,
                 new DateTime(2014, 10, 10, 14, 30, 0).ToUniversalTime()));
-            await day.Community.AddFactAsync(new Time(day,
+            await community.AddFactAsync(new Time(day,
                 new DateTime(2014, 10, 10, 16, 0, 0).ToUniversalTime()));
+
+            var room = await community.AddFactAsync(new Room(conference));
+            room.RoomNumber = "Euclid";
+
+            var morningRoom = await community.AddFactAsync(new Place(morning, room));
+
+            var qed = await community.AddFactAsync(new Speaker(conference));
+            qed.ImageUrl = "http://qedcode.com/extras/Perry_Headshot_Medium.jpg";
+            qed.Name = "Michael L Perry";
+
+            var session = await community.AddFactAsync(new Session(conference, qed, null));
+            session.Name = "Modeling Settlers of Catan with Degrees of Freedom";
+
+            await community.AddFactAsync(new SessionPlace(session, morningRoom, Enumerable.Empty<SessionPlace>()));
         }
     }
 }
