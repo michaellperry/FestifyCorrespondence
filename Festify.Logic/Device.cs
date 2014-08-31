@@ -72,6 +72,10 @@ namespace Festify.Logic
         {
             Community.Perform(async delegate
             {
+                var conference = await Community.AddFactAsync(new Conference(ConferenceId));
+                await CreateTestData(conference);
+                Conference = conference;
+
                 var individual = await Community.LoadFactAsync<Individual>(ThisIndividual);
                 if (individual == null)
                 {
@@ -79,10 +83,6 @@ namespace Festify.Logic
                     await Community.SetFactAsync(ThisIndividual, individual);
                 }
                 Individual = individual;
-
-                var conference = await Community.AddFactAsync(new Conference(ConferenceId));
-                await CreateTestData(conference);
-                Conference = conference;
             });
         }
 

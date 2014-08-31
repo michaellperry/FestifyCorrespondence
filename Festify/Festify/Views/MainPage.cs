@@ -19,6 +19,9 @@ namespace Festify.Views
         {
             _viewModel = viewModel;
 
+            var exception = new Label();
+            exception.BindText(() => _viewModel.Exception);
+
             var title = new Label();
             title.BindText(() => _viewModel.Title);
 
@@ -30,6 +33,7 @@ namespace Festify.Views
             {
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
+            content.Children.Add(exception);
             content.Children.Add(title);
             content.Children.Add(days);
 

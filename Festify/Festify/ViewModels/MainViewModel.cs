@@ -17,6 +17,18 @@ namespace Festify.ViewModels
             _synchronizationService = synchronizationService;
         }
 
+        public string Exception
+        {
+            get
+            {
+                var exception = _synchronizationService.Community.LastException;
+                if (exception == null)
+                    return String.Empty;
+                else
+                    return exception.Message;
+            }
+        }
+
         public string Title
         {
             get { return _synchronizationService.Device.Conference.Name; }
