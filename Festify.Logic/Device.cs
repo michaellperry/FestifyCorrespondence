@@ -106,20 +106,22 @@ namespace Festify.Logic
 
         private async Task CreateTestData(Conference conference)
         {
+            conference.Name = "Dallas TechFest 2014";
+
             var day = await conference.Community.AddFactAsync(new Day(conference,
-                new DateTime(2014, 9, 8, 0, 0, 0, DateTimeKind.Utc)));
+                new DateTime(2014, 10, 10, 0, 0, 0, DateTimeKind.Utc)));
             await day.Community.AddFactAsync(new Time(day,
-                new DateTime(2014, 9, 8, 9, 0, 0).ToUniversalTime()));
+                new DateTime(2014, 10, 10, 9, 0, 0).ToUniversalTime()));
             await day.Community.AddFactAsync(new Time(day,
-                new DateTime(2014, 9, 8, 10, 30, 0).ToUniversalTime()));
+                new DateTime(2014, 10, 10, 10, 30, 0).ToUniversalTime()));
             await day.Community.AddFactAsync(new Time(day,
-                new DateTime(2014, 9, 8, 12, 0, 0).ToUniversalTime()));
+                new DateTime(2014, 10, 10, 12, 0, 0).ToUniversalTime()));
             await day.Community.AddFactAsync(new Time(day,
-                new DateTime(2014, 9, 8, 13, 0, 0).ToUniversalTime()));
+                new DateTime(2014, 10, 10, 13, 0, 0).ToUniversalTime()));
             await day.Community.AddFactAsync(new Time(day,
-                new DateTime(2014, 9, 8, 14, 30, 0).ToUniversalTime()));
+                new DateTime(2014, 10, 10, 14, 30, 0).ToUniversalTime()));
             await day.Community.AddFactAsync(new Time(day,
-                new DateTime(2014, 9, 8, 16, 0, 0).ToUniversalTime()));
+                new DateTime(2014, 10, 10, 16, 0, 0).ToUniversalTime()));
         }
     }
 }

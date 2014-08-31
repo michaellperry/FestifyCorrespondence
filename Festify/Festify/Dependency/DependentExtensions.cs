@@ -80,13 +80,14 @@ namespace Festify
                 () => whenChanged(dependent));
         }
 
-        public static DependentSubscription Repeat<TView>(
+        public static DependentSubscription Repeat<TItem, TView>(
             this Layout<TView> container,
-            Func<IEnumerable<TView>> children)
+            Func<IEnumerable<TItem>> items,
+            Func<TItem, TView> view)
             where TView : View
         {
             var depTimes = new DependentList<ChildView<TView>>(() =>
-                children().Select(c => new ChildView<TView>(container, c)));
+                items().Select(c => new ChildView<TView>(container, view(c))));
             var subscription = depTimes.Subscribe(delegate(IEnumerable<ChildView<TView>> views)
             {
                 int i = 0;
@@ -94,6 +95,14 @@ namespace Festify
                     v.InsertAt(i++);
             });
             return subscription;
+        }
+
+        public static DependentSubscription BindText(
+            this Label control,
+            Func<string> text)
+        {
+            var dependent = new Dependent<string>(text);
+            return dependent.Subscribe(t => control.Text = t);
         }
     }
 }

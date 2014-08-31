@@ -18,6 +18,11 @@ namespace Festify.ViewModels
             _individual = individual;
         }
 
+        public string Title
+        {
+            get { return _conference.Name; }
+        }
+
         public IEnumerable<DayHeader> Days
         {
             get

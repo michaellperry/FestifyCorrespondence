@@ -21,15 +21,26 @@ namespace Festify.Views
                 Text = _header.Header
             });
 
-            Children.Add(StackLayoutOf(() =>
-                _header.Times.Select(t => new TimeView(t))));
+            var list = new StackLayout();
+            list.Repeat(() => _header.Times, t => new TimeView(t));
+            Children.Add(list);
         }
 
-        private StackLayout StackLayoutOf(Func<IEnumerable<View>> children)
+        public override bool Equals(object obj)
         {
-            var list = new StackLayout();
-            list.Repeat(children);
-            return list;
+            if (this == obj)
+                return true;
+
+            var that = obj as DayView;
+            if (that == null)
+                return false;
+
+            return Object.Equals(this._header, that._header);
+        }
+
+        public override int GetHashCode()
+        {
+            return _header.GetHashCode();
         }
     }
 }

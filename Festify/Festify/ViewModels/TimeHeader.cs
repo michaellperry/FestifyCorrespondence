@@ -18,6 +18,11 @@ namespace Festify.ViewModels
             _individual = individual;
         }
 
+        public Time Time
+        {
+            get { return _time; }
+        }
+
         public string Label
         {
             get { return _time.Start.ToLocalTime().ToShortTimeString(); }

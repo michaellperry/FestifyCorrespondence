@@ -15,10 +15,10 @@ namespace Festify.Views
         public TimeView(TimeHeader viewModel)
         {
             _viewModel = viewModel;
-            BindingContext = _viewModel;
 
             var label = new Label();
-            label.SetBinding<TimeHeader>(Label.TextProperty, h => h.Label);
+            label.BindText(() => _viewModel.Label);
+
             Children.Add(label);
         }
 
