@@ -20,9 +20,7 @@ namespace Festify
             var synchronizationService = new SynchronizationService();
             synchronizationService.Initialize();
 
-            var viewModel = new MainViewModel(
-                synchronizationService.Device.Conference,
-                synchronizationService.Individual);
+            var viewModel = new MainViewModel(synchronizationService);
             var mainPage = new MainPage(viewModel);
 
             return new NavigationPage(mainPage);

@@ -1,5 +1,6 @@
 ﻿using Festify.Dependency;
 using Festify.Model;
+using Festify.Synchronization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,16 @@ namespace Festify.ViewModels
 {
     public class MainViewModel
     {
-        private readonly Conference _conference;
-        private readonly Individual _individual;
+        private readonly SynchronizationService _synchronizationService;
 
-        public MainViewModel(Conference conference, Individual individual)
+        public MainViewModel(SynchronizationService synchronizationService)
         {
-            _conference = conference;
-            _individual = individual;
+            _synchronizationService = synchronizationService;
         }
 
         public string Title
         {
-            get { return _conference.Name; }
+            get { return _synchronizationService.Device.Conference.Name; }
         }
 
         public IEnumerable<DayHeader> Days
@@ -28,9 +27,9 @@ namespace Festify.ViewModels
             get
             {
                 return
-                    from day in _conference.Days
+                    from day in _synchronizationService.Device.Conference.Days
                     orderby day.ConferenceDate
-                    select new DayHeader(day, _individual);
+                    select new DayHeader(day, _synchronizationService.Individual);
             }
         }
     }

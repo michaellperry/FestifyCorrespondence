@@ -4,6 +4,7 @@ using UpdateControls.Correspondence;
 using UpdateControls.Correspondence.BinaryHTTPClient;
 using UpdateControls.Correspondence.Memory;
 using Festify.Logic;
+using UpdateControls.Correspondence.Strategy;
 
 namespace Festify.Synchronization
 {
@@ -11,11 +12,15 @@ namespace Festify.Synchronization
     {
         private Device _device;
 
-        private MemoryStorageStrategy _storage;
+        private IStorageStrategy _storage;
 
         public void Initialize()
         {
+#if WINDOWS_PHONE
+            _storage = new UpdateControls.Correspondence.FileStream.FileStreamStorageStrategy();
+#else
             _storage = new MemoryStorageStrategy();
+#endif
             _device = new Device(_storage);
 
             var http = new HTTPConfigurationProvider();
