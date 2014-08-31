@@ -8,12 +8,14 @@ namespace Festify.Views.Main
     public class TimeView : Grid, IDisposable
     {
         private readonly TimeHeader _viewModel;
+        private readonly NavigationManager _navigation;
 
         private ChildManager _childManager = new ChildManager();
 
-        public TimeView(TimeHeader viewModel)
+        public TimeView(TimeHeader viewModel, NavigationManager navigation)
         {
             _viewModel = viewModel;
+            _navigation = navigation;
 
             ColumnDefinitions = new ColumnDefinitionCollection
             {
@@ -26,7 +28,7 @@ namespace Festify.Views.Main
             Children.Add(label, 0, 0);
 
             var details = new StackLayout();
-            _childManager.Add(details.Repeat(() => _viewModel.Sessions, s => new SessionView(s)));
+            _childManager.Add(details.Repeat(() => _viewModel.Sessions, s => new SessionView(s, _navigation)));
             Children.Add(details, 1, 0);
         }
 

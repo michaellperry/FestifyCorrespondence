@@ -1,21 +1,19 @@
 ﻿using Festify.Dependency;
-using Festify.ViewModels.Main;
+using Festify.ViewModels.TimeSlot;
 using System;
 using Xamarin.Forms;
 
-namespace Festify.Views.Main
+namespace Festify.Views.TimeSlot
 {
     public class SessionView : Grid, IDisposable
     {
         private readonly SessionHeader _viewModel;
-        private readonly NavigationManager _navigation;
 
         private ChildManager _childManager = new ChildManager();
 
-        public SessionView(SessionHeader viewModel, NavigationManager navigation)
+        public SessionView(SessionHeader viewModel)
         {
             _viewModel = viewModel;
-            _navigation = navigation;
 
             ColumnDefinitions = new ColumnDefinitionCollection
             {
@@ -30,17 +28,12 @@ namespace Festify.Views.Main
                 new RowDefinition { Height = new GridLength(30, GridUnitType.Absolute) }
             };
 
-            var button = new Button();
-            button.Clicked += button_Clicked;
-            button.Text = "Select";
-            Children.Add(button, 0, 1, 0, 2);
-
-            //var image = new Image();
-            //_childManager.Add(image.BindSource(() => _viewModel.Image));
-            //Children.Add(image, 0, 1, 0, 2);
+            var image = new Image();
+            _childManager.Add(image.BindSource(() => _viewModel.Image));
+            Children.Add(image, 0, 1, 0, 2);
 
             var title = new Label();
-            _childManager.Add(title.BindText(() => _viewModel.Title));
+            _childManager.Add(title.BindText(() => _viewModel.Name));
             Children.Add(title, 1, 3, 0, 1);
 
             var speaker = new Label();
@@ -50,11 +43,6 @@ namespace Festify.Views.Main
             var room = new Label();
             _childManager.Add(room.BindText(() => _viewModel.Room));
             Children.Add(room, 2, 1);
-        }
-
-        private void button_Clicked(object sender, EventArgs e)
-        {
-            _navigation.NavigateToTimeSlot(_viewModel.SessionPlace.Place.PlaceTime, _viewModel.Individual);
         }
 
         public void Dispose()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Festify.Model;
 
-namespace Festify.ViewModels.Main
+namespace Festify.ViewModels.TimeSlot
 {
     public class SessionHeader
     {
@@ -16,22 +16,12 @@ namespace Festify.ViewModels.Main
             _individual = individual;
         }
 
-        public SessionPlace SessionPlace
-        {
-            get { return _sessionPlace; }
-        }
-
-        public Individual Individual
-        {
-            get { return _individual; }
-        }
-
         public string Image
         {
             get { return _sessionPlace.Session.Speaker.ImageUrl; }
         }
 
-        public string Title
+        public string Name
         {
             get { return _sessionPlace.Session.Name; }
         }

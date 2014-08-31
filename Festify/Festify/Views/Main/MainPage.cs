@@ -10,10 +10,12 @@ namespace Festify.Views.Main
         private readonly MainViewModel _viewModel;
 
         private ChildManager _childManager = new ChildManager();
+        private readonly NavigationManager _navigation;
         
         public MainPage(MainViewModel viewModel)
         {
             _viewModel = viewModel;
+            _navigation = new NavigationManager(Navigation);
 
             var exception = new Label();
             _childManager.Add(exception.BindText(() => _viewModel.Exception));
@@ -22,7 +24,7 @@ namespace Festify.Views.Main
             _childManager.Add(title.BindText(() => _viewModel.Title));
 
             var days = new StackLayout();
-            _childManager.Add(days.Repeat(() => _viewModel.Days, d => new DayView(d)));
+            _childManager.Add(days.Repeat(() => _viewModel.Days, d => new DayView(d, _navigation)));
             days.VerticalOptions = LayoutOptions.FillAndExpand;
 
             var content = new StackLayout
@@ -39,11 +41,6 @@ namespace Festify.Views.Main
         void button_Clicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new SessionPage());
-        }
-
-        protected override void OnDisappearing()
-        {
-            _childManager.DisposeAll();
         }
     }
 }

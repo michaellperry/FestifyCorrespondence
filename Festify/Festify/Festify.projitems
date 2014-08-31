@@ -24,10 +24,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\SessionHeader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\TimeHeader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TimeSlot\SessionHeader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TimeSlot\TimeSlotViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Main\DayView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Main\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Main\SessionPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Main\SessionView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Main\TimeView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\NavigationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\TimeSlot\SessionView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\TimeSlot\TimeSlotPage.cs" />
   </ItemGroup>
 </Project>

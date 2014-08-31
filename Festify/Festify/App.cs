@@ -1,5 +1,6 @@
 ﻿using Festify.Synchronization;
 using Festify.ViewModels.Main;
+using Festify.Views;
 using Festify.Views.Main;
 using UpdateControls;
 using Xamarin.Forms;

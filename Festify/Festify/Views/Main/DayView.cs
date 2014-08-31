@@ -8,12 +8,14 @@ namespace Festify.Views.Main
     public class DayView : StackLayout, IDisposable
     {
         private readonly DayHeader _header;
+        private readonly NavigationManager _navigation;
 
         private ChildManager _childManager = new ChildManager();
 
-        public DayView(DayHeader header)
+        public DayView(DayHeader header, NavigationManager navigation)
         {
             _header = header;
+            _navigation = navigation;
 
             Children.Add(new Label
             {
@@ -21,7 +23,7 @@ namespace Festify.Views.Main
             });
 
             var list = new StackLayout();
-            _childManager.Add(list.Repeat(() => _header.Times, t => new TimeView(t)));
+            _childManager.Add(list.Repeat(() => _header.Times, t => new TimeView(t, _navigation)));
             Children.Add(list);
         }
 
