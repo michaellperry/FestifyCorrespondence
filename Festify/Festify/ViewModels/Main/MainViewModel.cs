@@ -44,5 +44,17 @@ namespace Festify.ViewModels.Main
                     select new DayHeader(day, _synchronizationService.Individual);
             }
         }
+
+        public IEnumerable<TimeHeader> Times
+        {
+            get
+            {
+                return
+                    from day in _synchronizationService.Device.Conference.Days
+                    from time in day.Times
+                    orderby time.Start
+                    select new TimeHeader(time, _synchronizationService.Individual);
+            }
+        }
     }
 }

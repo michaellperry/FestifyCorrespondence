@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Festify.Model;
+using System.Windows.Input;
+using Festify.Dependency;
 
 namespace Festify.ViewModels.Main
 {
@@ -44,6 +46,15 @@ namespace Festify.ViewModels.Main
         public string Room
         {
             get { return _sessionPlace.Place.Room.RoomNumber; }
+        }
+
+        public ICommand Select
+        {
+            get
+            {
+                return MakeCommand
+                    .Do(() => System.Diagnostics.Debug.WriteLine("Navigate"));
+            }
         }
 
         public override bool Equals(object obj)

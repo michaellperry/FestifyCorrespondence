@@ -27,9 +27,29 @@ namespace Festify.Views.Main
             _childManager.Add(label.BindText(() => _viewModel.Label));
             Children.Add(label, 0, 0);
 
-            var details = new StackLayout();
-            _childManager.Add(details.Repeat(() => _viewModel.Sessions, s => new SessionView(s, _navigation)));
+            var details = new ListView();
+            details.ItemsSource = _viewModel.Sessions;
+            details.ItemTemplate = new DataTemplate(() =>
+            {
+                var cell = new ImageCell();
+                cell.SetBinding<SessionHeader>(ImageCell.TextProperty, s => s.Title);
+                cell.SetBinding<SessionHeader>(ImageCell.DetailProperty, s => s.Speaker);
+                cell.SetBinding<SessionHeader>(ImageCell.ImageSourceProperty, s => s.Image);
+                cell.SetBinding<SessionHeader>(ImageCell.CommandProperty, s => s.Select);
+                return cell;
+            });
+
+            //var details = new StackLayout();
+            //_childManager.Add(details.Repeat(() => _viewModel.Sessions, s => new SessionView(s, _navigation)));
             Children.Add(details, 1, 0);
+
+            details.ItemSelected += details_ItemSelected;
+        }
+
+        private void details_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            SessionHeader selected = (SessionHeader)e.SelectedItem;
+            _navigation.NavigateToTimeSlot(selected.SessionPlace.Place.PlaceTime, selected.Individual);
         }
 
         public void Dispose()

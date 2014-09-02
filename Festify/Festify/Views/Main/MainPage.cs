@@ -16,16 +16,25 @@ namespace Festify.Views.Main
         {
             _viewModel = viewModel;
             _navigation = new NavigationManager(Navigation);
+            BindingContext = _viewModel;
 
             var exception = new Label();
-            _childManager.Add(exception.BindText(() => _viewModel.Exception));
+            exception.SetBinding<MainViewModel>(Label.TextProperty, vm => vm.Exception);
 
             var title = new Label();
-            _childManager.Add(title.BindText(() => _viewModel.Title));
+            title.SetBinding<MainViewModel>(Label.TextProperty, vm => vm.Title);
 
-            var days = new StackLayout();
-            _childManager.Add(days.Repeat(() => _viewModel.Days, d => new DayView(d, _navigation)));
-            days.VerticalOptions = LayoutOptions.FillAndExpand;
+            var times = new ListView();
+            times.SetBinding<MainViewModel>(ListView.ItemsSourceProperty, vm => vm.Times);
+            times.ItemTemplate = new DataTemplate(() =>
+            {
+                var cell = new ImageCell();
+                cell.SetBinding<TimeHeader>(ImageCell.TextProperty, s => s.Title);
+                cell.SetBinding<TimeHeader>(ImageCell.DetailProperty, s => s.Speaker);
+                cell.SetBinding<TimeHeader>(ImageCell.ImageSourceProperty, s => s.Image);
+                cell.SetBinding<TimeHeader>(ImageCell.CommandProperty, s => s.Select);
+                return cell;
+            });
 
             var content = new StackLayout
             {
@@ -33,14 +42,9 @@ namespace Festify.Views.Main
             };
             content.Children.Add(exception);
             content.Children.Add(title);
-            content.Children.Add(days);
+            content.Children.Add(times);
 
             Content = content;
-        }
-
-        void button_Clicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new SessionPage());
         }
     }
 }

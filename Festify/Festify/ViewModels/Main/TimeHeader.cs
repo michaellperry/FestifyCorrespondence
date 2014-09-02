@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 
 namespace Festify.ViewModels.Main
 {
@@ -26,6 +27,33 @@ namespace Festify.ViewModels.Main
         public string Label
         {
             get { return _time.Start.ToLocalTime().ToShortTimeString(); }
+        }
+
+        public string Title
+        {
+            get { return "Breakout Session"; }
+        }
+
+        public string Speaker
+        {
+            get { return "Tap to select"; }
+        }
+
+        public string Image
+        {
+            get { return "http://img4.wikia.nocookie.net/__cb20130830125537/smallville/images/thumb/0/06/Question-mark.jpg/480px-Question-mark.jpg"; }
+        }
+
+        public ICommand Select
+        {
+            get
+            {
+                return MakeCommand
+                    .Do(delegate
+                    {
+
+                    });
+            }
         }
 
         public IEnumerable<SessionHeader> Sessions

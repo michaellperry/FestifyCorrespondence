@@ -30,14 +30,14 @@ namespace Festify.Views.Main
                 new RowDefinition { Height = new GridLength(30, GridUnitType.Absolute) }
             };
 
-            var button = new Button();
-            button.Clicked += button_Clicked;
-            button.Text = "Select";
-            Children.Add(button, 0, 1, 0, 2);
+            //var button = new Button();
+            //button.Clicked += button_Clicked;
+            //button.Text = "Select";
+            //Children.Add(button, 0, 1, 0, 2);
 
-            //var image = new Image();
-            //_childManager.Add(image.BindSource(() => _viewModel.Image));
-            //Children.Add(image, 0, 1, 0, 2);
+            var image = new Image();
+            _childManager.Add(image.BindSource(() => _viewModel.Image));
+            Children.Add(image, 0, 1, 0, 2);
 
             var title = new Label();
             _childManager.Add(title.BindText(() => _viewModel.Title));
