@@ -1,6 +1,8 @@
 ﻿using Festify.Dependency;
 using Festify.Synchronization;
 using Festify.ViewModels.Main;
+using Festify.ViewModels.TimeSlot;
+using Festify.Views.TimeSlot;
 using Xamarin.Forms;
 
 namespace Festify.Views.Main
@@ -11,14 +13,11 @@ namespace Festify.Views.Main
         private readonly SynchronizationService _synchronizationService;
 
         private ChildManager _childManager = new ChildManager();
-        private readonly NavigationManager _navigation;
         
         public MainPage(MainViewModel viewModel, SynchronizationService synchronizationService)
         {
             _synchronizationService = synchronizationService;
             _viewModel = viewModel;
-
-            _navigation = new NavigationManager(Navigation);
             BindingContext = _viewModel;
 
             var exception = new Label();
@@ -53,7 +52,7 @@ namespace Festify.Views.Main
         private void TimeSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem != null && !_synchronizationService.Individual.IsNull)
-                _navigation.NavigateToTimeSlot(((TimeHeader)e.SelectedItem).Time, _synchronizationService.Individual);
+                Navigation.PushAsync(new TimeSlotPage(new TimeSlotViewModel(((TimeHeader)e.SelectedItem).Time, _synchronizationService.Individual)));
 
             ((ListView)sender).SelectedItem = null;
         }

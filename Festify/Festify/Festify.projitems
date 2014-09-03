@@ -28,7 +28,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TimeSlot\TimeSlotViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Detail\DetailPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Main\MainPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\NavigationManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\TimeSlot\TimeSlotPage.cs" />
   </ItemGroup>
 </Project>
