@@ -20,9 +20,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)IDispatchOnUIThread.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Synchronization\HTTPConfigurationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Synchronization\SynchronizationService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\DayHeader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Detail\DetailViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\MainViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\SessionHeader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Main\TimeHeader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TimeSlot\SessionHeader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TimeSlot\TimeSlotViewModel.cs" />

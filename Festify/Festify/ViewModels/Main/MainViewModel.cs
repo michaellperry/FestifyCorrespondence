@@ -31,17 +31,6 @@ namespace Festify.ViewModels.Main
             get { return _synchronizationService.Device.Conference.Name; }
         }
 
-        public IEnumerable<DayHeader> Days
-        {
-            get
-            {
-                return
-                    from day in _synchronizationService.Device.Conference.Days
-                    orderby day.ConferenceDate
-                    select new DayHeader(day, _synchronizationService.Individual);
-            }
-        }
-
         public IEnumerable<TimeHeader> Times
         {
             get

@@ -1,4 +1,5 @@
 ﻿using Festify.Dependency;
+using Festify.ViewModels.Detail;
 using Festify.ViewModels.TimeSlot;
 using Festify.Views.Detail;
 using System;
@@ -44,7 +45,7 @@ namespace Festify.Views.TimeSlot
         void sessions_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem != null)
-                Navigation.PushAsync(new DetailPage(((SessionHeader)e.SelectedItem).Session));
+                Navigation.PushAsync(new DetailPage(new DetailViewModel(((SessionHeader)e.SelectedItem).Session, _viewModel.Individual)));
 
             ((ListView)sender).SelectedItem = null;
         }

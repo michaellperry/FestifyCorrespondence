@@ -23,6 +23,11 @@ namespace Festify.ViewModels.TimeSlot
             get { return _time.Start.ToLocalTime().ToShortTimeString(); }
         }
 
+        public Individual Individual
+        {
+            get { return _individual; }
+        }
+
         public IEnumerable<SessionHeader> Sessions
         {
             get
