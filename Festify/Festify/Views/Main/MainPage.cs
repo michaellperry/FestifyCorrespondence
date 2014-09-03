@@ -30,7 +30,7 @@ namespace Festify.Views.Main
             {
                 var cell = new ImageCell();
                 cell.SetBinding<TimeHeader>(ImageCell.TextProperty, s => s.Title);
-                cell.SetBinding<TimeHeader>(ImageCell.DetailProperty, s => s.Speaker);
+                cell.SetBinding<TimeHeader>(ImageCell.DetailProperty, s => s.RoomNumber);
                 cell.SetBinding<TimeHeader>(ImageCell.ImageSourceProperty, s => s.Image);
                 cell.SetBinding<TimeHeader>(ImageCell.CommandProperty, s => s.Select);
                 return cell;

@@ -19,29 +19,49 @@ namespace Festify.ViewModels.Main
             _individual = individual;
         }
 
-        public Time Time
-        {
-            get { return _time; }
-        }
-
-        public string Label
-        {
-            get { return _time.Start.ToLocalTime().ToShortTimeString(); }
-        }
-
         public string Title
         {
-            get { return "Breakout Session"; }
+            get
+            {
+                return Get(delegate()
+                {
+                    var sessionPlace = SessionPlace;
+                    var sessionName = sessionPlace == null
+                        ? "Breakout Session"
+                        : sessionPlace.Session.Name.Value;
+                    return String.Format("{0}: {1}",
+                        _time.Start.ToLocalTime().ToShortTimeString(),
+                        sessionName);
+                });
+            }
         }
 
-        public string Speaker
+        public string RoomNumber
         {
-            get { return "Tap to select"; }
+            get
+            {
+                return Get(delegate()
+                {
+                    var sessionPlace = SessionPlace;
+                    return sessionPlace == null
+                        ? "Tap to select"
+                        : sessionPlace.Place.Room.RoomNumber.Value;
+                });
+            }
         }
 
         public string Image
         {
-            get { return "http://img4.wikia.nocookie.net/__cb20130830125537/smallville/images/thumb/0/06/Question-mark.jpg/480px-Question-mark.jpg"; }
+            get
+            {
+                return Get(delegate()
+                {
+                    var sessionPlace = SessionPlace;
+                    return sessionPlace == null
+                        ? "https://jobs.thejobnetwork.com/Content/CandidateNet/Images/QuestionMark_IconTransparent.png"
+                        : sessionPlace.Session.Speaker.ImageUrl.Value;
+                });
+            }
         }
 
         public ICommand Select
@@ -56,15 +76,18 @@ namespace Festify.ViewModels.Main
             }
         }
 
-        public IEnumerable<SessionHeader> Sessions
+        private SessionPlace SessionPlace
         {
             get
             {
-                return
-                    from sessionPlace in _time.AvailableSessions
-                    select new SessionHeader(sessionPlace, _individual);
+                var sessionPlaces = _time.AvailableSessions;
+                if (sessionPlaces.Count() == 1)
+                    return sessionPlaces.Single();
+                else
+                    return null;
             }
         }
+
         public override bool Equals(object obj)
         {
             if (this == obj)
