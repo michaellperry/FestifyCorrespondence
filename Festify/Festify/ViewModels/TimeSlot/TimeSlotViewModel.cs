@@ -1,4 +1,5 @@
-﻿using Festify.Model;
+﻿using Festify.Dependency;
+using Festify.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace Festify.ViewModels.TimeSlot
 {
-    public class TimeSlotViewModel
+    public class TimeSlotViewModel : ViewModelBase
     {
         private readonly Time _time;
         private readonly Individual _individual;
@@ -19,7 +20,7 @@ namespace Festify.ViewModels.TimeSlot
 
         public string Time
         {
-            get { return _time.Start.ToShortTimeString(); }
+            get { return _time.Start.ToLocalTime().ToShortTimeString(); }
         }
 
         public IEnumerable<SessionHeader> Sessions
