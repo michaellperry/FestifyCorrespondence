@@ -1,10 +1,7 @@
 using Festify.Dependency;
 using Festify.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows.Input;
 
 namespace Festify.ViewModels.Main
 {
@@ -17,6 +14,11 @@ namespace Festify.ViewModels.Main
         {
             _time = time;
             _individual = individual;
+        }
+
+        public Time Time
+        {
+            get { return _time; }
         }
 
         public string Title
@@ -61,18 +63,6 @@ namespace Festify.ViewModels.Main
                         ? "https://jobs.thejobnetwork.com/Content/CandidateNet/Images/QuestionMark_IconTransparent.png"
                         : sessionPlace.Session.Speaker.ImageUrl.Value;
                 });
-            }
-        }
-
-        public ICommand Select
-        {
-            get
-            {
-                return MakeCommand
-                    .Do(delegate
-                    {
-
-                    });
             }
         }
 

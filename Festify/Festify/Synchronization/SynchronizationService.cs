@@ -1,9 +1,9 @@
-using System.Diagnostics;
+using Festify.Logic;
 using Festify.Model;
+using System.Diagnostics;
 using UpdateControls.Correspondence;
 using UpdateControls.Correspondence.BinaryHTTPClient;
 using UpdateControls.Correspondence.Memory;
-using Festify.Logic;
 using UpdateControls.Correspondence.Strategy;
 
 namespace Festify.Synchronization

@@ -1,17 +1,14 @@
-﻿using Festify.Dependency;
-using Festify.Model;
-using Festify.Synchronization;
+﻿using Festify.Synchronization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Festify.ViewModels.Main
 {
     public class MainViewModel
     {
         private readonly SynchronizationService _synchronizationService;
-
+        
         public MainViewModel(SynchronizationService synchronizationService)
         {
             _synchronizationService = synchronizationService;

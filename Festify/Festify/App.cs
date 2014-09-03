@@ -1,6 +1,5 @@
 ﻿using Festify.Synchronization;
 using Festify.ViewModels.Main;
-using Festify.Views;
 using Festify.Views.Main;
 using UpdateControls;
 using Xamarin.Forms;
@@ -17,7 +16,7 @@ namespace Festify
             synchronizationService.Initialize();
 
             var viewModel = new MainViewModel(synchronizationService);
-            var mainPage = new MainPage(viewModel);
+            var mainPage = new MainPage(viewModel, synchronizationService);
 
             return new NavigationPage(mainPage);
         }
