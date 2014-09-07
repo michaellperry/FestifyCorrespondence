@@ -3,7 +3,7 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>584219c9-96b6-438a-ac2c-b40e5f17ba3b</SharedGUID>
+    <SharedGUID>0eb8655b-2efa-46e3-bc96-8b40289d834a</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>Festify</Import_RootNamespace>

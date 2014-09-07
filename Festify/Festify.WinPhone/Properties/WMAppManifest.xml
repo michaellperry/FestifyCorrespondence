@@ -2,7 +2,7 @@
 
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US"/>
-  <App xmlns="" ProductID="{2d8fb0c2-76b7-474b-81dd-9cea7a347441}" Title="Festify.WinPhone" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="Festify.WinPhone author" Description="Sample description" Publisher="Festify.WinPhone" PublisherID="{83d62a2f-7cc8-4f8f-bc79-f0d4e4af1a81}">
+  <App xmlns="" ProductID="{a7a0365c-caa8-45b5-a697-4abc758db0c1}" Title="Festify.WinPhone" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="Festify.WinPhone author" Description="Sample description" Publisher="Festify.WinPhone" PublisherID="{31e38163-0f42-4f3e-96a2-180352928ea8}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING"/>
