@@ -7,6 +7,7 @@ using UpdateControls.Correspondence.FileStream;
 using Festify.Logic;
 using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Festify.DallasTechFest._2014
 {
@@ -40,6 +41,16 @@ namespace Festify.DallasTechFest._2014
                 Output(String.Format("Failed: {0} {1}",
                     sessionsResponse.ReasonPhrase,
                     sessionsResponse.RequestMessage));
+            }
+
+            HttpContent content = sessionsResponse.Content;
+            var sessionsJson = await content.ReadAsStringAsync();
+
+            var sessions = JsonConvert.DeserializeObject<Session[]>(sessionsJson);
+
+            foreach (var session in sessions)
+            {
+                Output(session.title);
             }
 
             Output("Success!");
