@@ -72,18 +72,23 @@ namespace Festify.Logic
         {
             Community.Perform(async delegate
             {
-                var conference = await Community.AddFactAsync(new Conference(ConferenceId));
-                await CreateTestData(conference);
-                Conference = conference;
-
-                var individual = await Community.LoadFactAsync<Individual>(ThisIndividual);
-                if (individual == null)
-                {
-                    individual = await Community.AddFactAsync(new Individual());
-                    await Community.SetFactAsync(ThisIndividual, individual);
-                }
-                Individual = individual;
+                await CreateIndividualAsync();
             });
+        }
+
+        public async Task CreateIndividualAsync()
+        {
+            var conference = await Community.AddFactAsync(new Conference(ConferenceId));
+            await CreateTestData(conference);
+            Conference = conference;
+
+            var individual = await Community.LoadFactAsync<Individual>(ThisIndividual);
+            if (individual == null)
+            {
+                individual = await Community.AddFactAsync(new Individual());
+                await Community.SetFactAsync(ThisIndividual, individual);
+            }
+            Individual = individual;
         }
 
         public void CreateIndividualDesignData()

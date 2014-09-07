@@ -61,6 +61,8 @@ digraph "Festify.Model"
     Session__level -> Session
     Session__level -> Session__level [label="  *"]
     Session__level -> Level
+    Session__dtfSessionId -> Session
+    Session__dtfSessionId -> Session__dtfSessionId [label="  *"]
     SessionDelete -> Session
     SessionUndelete -> SessionDelete
     SessionNotice -> Session [color="red"]
@@ -3521,6 +3523,19 @@ namespace Festify.Model
             }
             return _cacheQueryBio;
 		}
+        private static Query _cacheQuerySessions;
+
+        public static Query GetQuerySessions()
+		{
+            if (_cacheQuerySessions == null)
+            {
+			    _cacheQuerySessions = new Query()
+    				.JoinSuccessors(Session.GetRoleSpeaker(), Condition.WhereIsEmpty(Session.GetQueryIsDeleted())
+				)
+                ;
+            }
+            return _cacheQuerySessions;
+		}
         private static Query _cacheQueryAvailableSessions;
 
         public static Query GetQueryAvailableSessions()
@@ -3553,6 +3568,7 @@ namespace Festify.Model
         private Result<Speaker__imageUrl> _imageUrl;
         private Result<Speaker__contact> _contact;
         private Result<Speaker__bio> _bio;
+        private Result<Session> _sessions;
         private Result<SessionPlace> _availableSessions;
 
         // Business constructor
@@ -3579,6 +3595,7 @@ namespace Festify.Model
             _imageUrl = new Result<Speaker__imageUrl>(this, GetQueryImageUrl(), Speaker__imageUrl.GetUnloadedInstance, Speaker__imageUrl.GetNullInstance);
             _contact = new Result<Speaker__contact>(this, GetQueryContact(), Speaker__contact.GetUnloadedInstance, Speaker__contact.GetNullInstance);
             _bio = new Result<Speaker__bio>(this, GetQueryBio(), Speaker__bio.GetUnloadedInstance, Speaker__bio.GetNullInstance);
+            _sessions = new Result<Session>(this, GetQuerySessions(), Session.GetUnloadedInstance, Session.GetNullInstance);
             _availableSessions = new Result<SessionPlace>(this, GetQueryAvailableSessions(), SessionPlace.GetUnloadedInstance, SessionPlace.GetNullInstance);
         }
 
@@ -3593,6 +3610,10 @@ namespace Festify.Model
 
 
         // Query result access
+        public Result<Session> Sessions
+        {
+            get { return _sessions; }
+        }
         public Result<SessionPlace> AvailableSessions
         {
             get { return _availableSessions; }
@@ -4965,6 +4986,19 @@ namespace Festify.Model
             }
             return _cacheQueryLevel;
 		}
+        private static Query _cacheQueryDtfSessionId;
+
+        public static Query GetQueryDtfSessionId()
+		{
+            if (_cacheQueryDtfSessionId == null)
+            {
+			    _cacheQueryDtfSessionId = new Query()
+    				.JoinSuccessors(Session__dtfSessionId.GetRoleSession(), Condition.WhereIsEmpty(Session__dtfSessionId.GetQueryIsCurrent())
+				)
+                ;
+            }
+            return _cacheQueryDtfSessionId;
+		}
         private static Query _cacheQueryCurrentSessionPlaces;
 
         public static Query GetQueryCurrentSessionPlaces()
@@ -5047,6 +5081,7 @@ namespace Festify.Model
         private Result<Session__name> _name;
         private Result<Session__description> _description;
         private Result<Session__level> _level;
+        private Result<Session__dtfSessionId> _dtfSessionId;
         private Result<SessionPlace> _currentSessionPlaces;
         private Result<SessionNotice> _notices;
         private Result<SessionDelete> _sessionDeletes;
@@ -5081,6 +5116,7 @@ namespace Festify.Model
             _name = new Result<Session__name>(this, GetQueryName(), Session__name.GetUnloadedInstance, Session__name.GetNullInstance);
             _description = new Result<Session__description>(this, GetQueryDescription(), Session__description.GetUnloadedInstance, Session__description.GetNullInstance);
             _level = new Result<Session__level>(this, GetQueryLevel(), Session__level.GetUnloadedInstance, Session__level.GetNullInstance);
+            _dtfSessionId = new Result<Session__dtfSessionId>(this, GetQueryDtfSessionId(), Session__dtfSessionId.GetUnloadedInstance, Session__dtfSessionId.GetNullInstance);
             _currentSessionPlaces = new Result<SessionPlace>(this, GetQueryCurrentSessionPlaces(), SessionPlace.GetUnloadedInstance, SessionPlace.GetNullInstance);
             _notices = new Result<SessionNotice>(this, GetQueryNotices(), SessionNotice.GetUnloadedInstance, SessionNotice.GetNullInstance);
             _sessionDeletes = new Result<SessionDelete>(this, GetQuerySessionDeletes(), SessionDelete.GetUnloadedInstance, SessionDelete.GetNullInstance);
@@ -5130,6 +5166,21 @@ namespace Festify.Model
                     if (current.Count != 1 || !object.Equals(current[0].Value, value.Value))
                     {
                         await Community.AddFactAsync(new Session__name(this, _name, value.Value));
+                    }
+                });
+			}
+        }
+        public TransientDisputable<Session__dtfSessionId, string> DtfSessionId
+        {
+            get { return _dtfSessionId.AsTransientDisputable(fact => fact.Value); }
+			set
+			{
+                Community.Perform(async delegate()
+                {
+                    var current = (await _dtfSessionId.EnsureAsync()).ToList();
+                    if (current.Count != 1 || !object.Equals(current[0].Value, value.Value))
+                    {
+                        await Community.AddFactAsync(new Session__dtfSessionId(this, _dtfSessionId, value.Value));
                     }
                 });
 			}
@@ -5698,6 +5749,182 @@ namespace Festify.Model
         }
 
         // Field access
+
+        // Query result access
+
+        // Mutable property access
+
+    }
+    
+    public partial class Session__dtfSessionId : CorrespondenceFact
+    {
+		// Factory
+		internal class CorrespondenceFactFactory : ICorrespondenceFactFactory
+		{
+			private IDictionary<Type, IFieldSerializer> _fieldSerializerByType;
+
+			public CorrespondenceFactFactory(IDictionary<Type, IFieldSerializer> fieldSerializerByType)
+			{
+				_fieldSerializerByType = fieldSerializerByType;
+			}
+
+			public CorrespondenceFact CreateFact(FactMemento memento)
+			{
+				Session__dtfSessionId newFact = new Session__dtfSessionId(memento);
+
+				// Create a memory stream from the memento data.
+				using (MemoryStream data = new MemoryStream(memento.Data))
+				{
+					using (BinaryReader output = new BinaryReader(data))
+					{
+						newFact._value = (string)_fieldSerializerByType[typeof(string)].ReadData(output);
+					}
+				}
+
+				return newFact;
+			}
+
+			public void WriteFactData(CorrespondenceFact obj, BinaryWriter output)
+			{
+				Session__dtfSessionId fact = (Session__dtfSessionId)obj;
+				_fieldSerializerByType[typeof(string)].WriteData(output, fact._value);
+			}
+
+            public CorrespondenceFact GetUnloadedInstance()
+            {
+                return Session__dtfSessionId.GetUnloadedInstance();
+            }
+
+            public CorrespondenceFact GetNullInstance()
+            {
+                return Session__dtfSessionId.GetNullInstance();
+            }
+		}
+
+		// Type
+		internal static CorrespondenceFactType _correspondenceFactType = new CorrespondenceFactType(
+			"Festify.Model.Session__dtfSessionId", -1186408944);
+
+		protected override CorrespondenceFactType GetCorrespondenceFactType()
+		{
+			return _correspondenceFactType;
+		}
+
+        // Null and unloaded instances
+        public static Session__dtfSessionId GetUnloadedInstance()
+        {
+            return new Session__dtfSessionId((FactMemento)null) { IsLoaded = false };
+        }
+
+        public static Session__dtfSessionId GetNullInstance()
+        {
+            return new Session__dtfSessionId((FactMemento)null) { IsNull = true };
+        }
+
+        // Ensure
+        public Task<Session__dtfSessionId> EnsureAsync()
+        {
+            if (_loadedTask != null)
+                return _loadedTask.ContinueWith(t => (Session__dtfSessionId)t.Result);
+            else
+                return Task.FromResult(this);
+        }
+
+        // Roles
+        private static Role _cacheRoleSession;
+        public static Role GetRoleSession()
+        {
+            if (_cacheRoleSession == null)
+            {
+                _cacheRoleSession = new Role(new RoleMemento(
+			        _correspondenceFactType,
+			        "session",
+			        Session._correspondenceFactType,
+			        false));
+            }
+            return _cacheRoleSession;
+        }
+        private static Role _cacheRolePrior;
+        public static Role GetRolePrior()
+        {
+            if (_cacheRolePrior == null)
+            {
+                _cacheRolePrior = new Role(new RoleMemento(
+			        _correspondenceFactType,
+			        "prior",
+			        Session__dtfSessionId._correspondenceFactType,
+			        false));
+            }
+            return _cacheRolePrior;
+        }
+
+        // Queries
+        private static Query _cacheQueryIsCurrent;
+
+        public static Query GetQueryIsCurrent()
+		{
+            if (_cacheQueryIsCurrent == null)
+            {
+			    _cacheQueryIsCurrent = new Query()
+		    		.JoinSuccessors(Session__dtfSessionId.GetRolePrior())
+                ;
+            }
+            return _cacheQueryIsCurrent;
+		}
+
+        // Predicates
+        public static Condition IsCurrent = Condition.WhereIsEmpty(GetQueryIsCurrent());
+
+        // Predecessors
+        private PredecessorObj<Session> _session;
+        private PredecessorList<Session__dtfSessionId> _prior;
+
+        // Fields
+        private string _value;
+
+        // Results
+
+        // Business constructor
+        public Session__dtfSessionId(
+            Session session
+            ,IEnumerable<Session__dtfSessionId> prior
+            ,string value
+            )
+        {
+            InitializeResults();
+            _session = new PredecessorObj<Session>(this, GetRoleSession(), session);
+            _prior = new PredecessorList<Session__dtfSessionId>(this, GetRolePrior(), prior);
+            _value = value;
+        }
+
+        // Hydration constructor
+        private Session__dtfSessionId(FactMemento memento)
+        {
+            InitializeResults();
+            _session = new PredecessorObj<Session>(this, GetRoleSession(), memento, Session.GetUnloadedInstance, Session.GetNullInstance);
+            _prior = new PredecessorList<Session__dtfSessionId>(this, GetRolePrior(), memento, Session__dtfSessionId.GetUnloadedInstance, Session__dtfSessionId.GetNullInstance);
+        }
+
+        // Result initializer
+        private void InitializeResults()
+        {
+        }
+
+        // Predecessor access
+        public Session Session
+        {
+            get { return IsNull ? Session.GetNullInstance() : _session.Fact; }
+        }
+        public PredecessorList<Session__dtfSessionId> Prior
+        {
+            get { return _prior; }
+        }
+
+        // Field access
+        public string Value
+        {
+            get { return _value; }
+        }
 
         // Query result access
 
@@ -8483,6 +8710,9 @@ namespace Festify.Model
 				Speaker.GetQueryBio().QueryDefinition);
 			community.AddQuery(
 				Speaker._correspondenceFactType,
+				Speaker.GetQuerySessions().QueryDefinition);
+			community.AddQuery(
+				Speaker._correspondenceFactType,
 				Speaker.GetQueryAvailableSessions().QueryDefinition);
 			community.AddType(
 				Speaker__name._correspondenceFactType,
@@ -8542,6 +8772,9 @@ namespace Festify.Model
 				Session.GetQueryLevel().QueryDefinition);
 			community.AddQuery(
 				Session._correspondenceFactType,
+				Session.GetQueryDtfSessionId().QueryDefinition);
+			community.AddQuery(
+				Session._correspondenceFactType,
 				Session.GetQueryCurrentSessionPlaces().QueryDefinition);
 			community.AddQuery(
 				Session._correspondenceFactType,
@@ -8576,6 +8809,13 @@ namespace Festify.Model
 			community.AddQuery(
 				Session__level._correspondenceFactType,
 				Session__level.GetQueryIsCurrent().QueryDefinition);
+			community.AddType(
+				Session__dtfSessionId._correspondenceFactType,
+				new Session__dtfSessionId.CorrespondenceFactFactory(fieldSerializerByType),
+				new FactMetadata(new List<CorrespondenceFactType> { Session__dtfSessionId._correspondenceFactType }));
+			community.AddQuery(
+				Session__dtfSessionId._correspondenceFactType,
+				Session__dtfSessionId.GetQueryIsCurrent().QueryDefinition);
 			community.AddType(
 				SessionDelete._correspondenceFactType,
 				new SessionDelete.CorrespondenceFactFactory(fieldSerializerByType),

@@ -256,6 +256,11 @@ mutable:
     DocumentSegment* bio;
 
 query:
+	Session* sessions {
+		Session s : s.speaker = this
+			where not s.isDeleted
+  }
+
 	SessionPlace* availableSessions {
 		Session s : s.speaker = this
 			where not s.isDeleted
@@ -301,6 +306,8 @@ mutable:
     string name;
 	DocumentSegment* description;
 	Level level;
+
+  string dtfSessionId;
 
 query:
 	SessionPlace* currentSessionPlaces {

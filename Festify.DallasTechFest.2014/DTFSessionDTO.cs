@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Festify.DallasTechFest._2014
 {
-    public class Session
+    public class DTFSessionDTO
     {
         public string id { get; set; }
         public string title { get; set; }
