@@ -52,6 +52,8 @@ namespace Festify.DallasTechFest._2014
 
             var sessions = JsonConvert.DeserializeObject<DTFSessionDTO[]>(sessionsJson);
 
+            _device.Conference.Name = "Dallas TechFest 2014";
+
             foreach (var session in sessions)
             {
                 await ImportSession(session);
@@ -81,7 +83,17 @@ namespace Festify.DallasTechFest._2014
             session.Name = sessionDto.title;
 
             var sessionPlaces = await session.CurrentSessionPlaces.EnsureAsync();
-            if (sessionPlaces.Count() != 1 || sessionPlaces.Single().Place != place)
+            if (sessionPlaces.Count() == 1)
+            {
+                Place oldPlace = await sessionPlaces.Single().Place.EnsureAsync();
+                Place newPlace = place;
+                if (oldPlace != newPlace)
+                {
+                    Output(String.Format("New session place {0} {1}.", sessionDto.timeSlot, sessionDto.title));
+                    await community.AddFactAsync(new SessionPlace(session, place, sessionPlaces));
+                }
+            }
+            else
             {
                 Output(String.Format("New session place {0} {1}.", sessionDto.timeSlot, sessionDto.title));
                 await community.AddFactAsync(new SessionPlace(session, place, sessionPlaces));

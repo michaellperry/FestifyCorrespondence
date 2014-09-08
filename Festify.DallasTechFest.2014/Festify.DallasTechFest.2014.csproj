@@ -85,7 +85,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DTFSessionDTO.cs" />
     <Compile Include="SessionLoader.cs" />
-    <Compile Include="SynchronizationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

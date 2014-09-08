@@ -79,7 +79,6 @@ namespace Festify.Logic
         public async Task CreateIndividualAsync()
         {
             var conference = await Community.AddFactAsync(new Conference(ConferenceId));
-            await CreateTestData(conference);
             Conference = conference;
 
             var individual = await Community.LoadFactAsync<Individual>(ThisIndividual);
