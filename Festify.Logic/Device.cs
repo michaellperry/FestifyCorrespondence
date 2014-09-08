@@ -13,7 +13,7 @@ namespace Festify.Logic
     public class Device
     {
         private const string ThisIndividual = "Festify.Individual.this";
-        private const string ConferenceId = "{672F91DE-EB0C-4A1F-8982-7C99ED625E3E}";
+        private const string ConferenceId = "{DA90A5C4-29FB-4961-B38B-9759BEE70ACF}";
 
         private Community _community;
         private Independent<Individual> _individual = new Independent<Individual>(
@@ -106,6 +106,7 @@ namespace Festify.Logic
         public void Subscribe()
         {
             Community.Subscribe(() => Individual);
+            Community.Subscribe(() => Conference);
         }
 
         private async Task CreateTestData(Conference conference)
