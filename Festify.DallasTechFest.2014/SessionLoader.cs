@@ -9,6 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Festify.Model;
+using UpdateControls.Correspondence.BinaryHTTPClient;
 
 namespace Festify.DallasTechFest._2014
 {
@@ -24,6 +25,10 @@ namespace Festify.DallasTechFest._2014
                     Path.Combine(
                         Environment.CurrentDirectory,
                         "Correspondence")));
+            var http = new HTTPConfigurationProvider();
+            var communication = new BinaryHTTPAsynchronousCommunicationStrategy(http);
+            _device.Community.AddAsynchronousCommunicationStrategy(communication);
+            _device.Subscribe();
 
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("http://dallastechfest.com/api/", UriKind.Absolute);
@@ -36,12 +41,8 @@ namespace Festify.DallasTechFest._2014
 
         private async Task LoadAsync()
         {
-            while (await _device.Community.SynchronizeAsync()) ;
-            if (_device.Community.LastException != null)
-            {
-                Output(_device.Community.LastException.Message);
+            if (!await SynchronizeAsync())
                 return;
-            }
 
             await _device.CreateIndividualAsync();
 
@@ -65,6 +66,9 @@ namespace Festify.DallasTechFest._2014
             {
                 await ImportSession(session);
             }
+
+            if (!await SynchronizeAsync())
+                return;
 
             Output("Success!");
         }
@@ -165,6 +169,25 @@ namespace Festify.DallasTechFest._2014
 
             Output(String.Format("New session {0}", sessionId));
             return newSession;
+        }
+
+        private async Task<bool> SynchronizeAsync()
+        {
+            _device.Community.BeginReceiving();
+
+            while (_device.Community.Synchronizing)
+                await Task.Delay(500);
+
+            _device.Community.BeginSending();
+
+            while (_device.Community.Synchronizing)
+                await Task.Delay(500);
+
+            bool ok = _device.Community.LastException == null;
+            if (!ok)
+                Output(_device.Community.LastException.Message);
+
+            return ok;
         }
 
         private void Output(string line)
