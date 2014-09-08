@@ -11,9 +11,9 @@ namespace Festify.DallasTechFest._2014
             get
             {
                 string address = "https://api.facetedworlds.com/correspondence_server_web/bin";
-                string apiKey = "<<Your API key>>";
+                string apiKey = "B6F6EFEADE474A038143B0ECB40CDCB6";
 				int timeoutSeconds = 30;
-                return new HTTPConfiguration(address, "Festify.DallasTechFest._2014", apiKey, timeoutSeconds);
+                return new HTTPConfiguration(address, "Festify", apiKey, timeoutSeconds);
             }
         }
     }

@@ -23,13 +23,13 @@ namespace Festify.Synchronization
 #endif
             _device = new Device(_storage);
 
-            //var http = new HTTPConfigurationProvider();
-            //var communication = new BinaryHTTPAsynchronousCommunicationStrategy(http);
-            //_device.Community.AddAsynchronousCommunicationStrategy(communication);
+            var http = new HTTPConfigurationProvider();
+            var communication = new BinaryHTTPAsynchronousCommunicationStrategy(http);
+            _device.Community.AddAsynchronousCommunicationStrategy(communication);
 
             _device.Community.FactAdded += Community_FactAdded;
             _device.Community.FactReceived += Community_FactReceived;
-            //communication.MessageReceived += communication_MessageReceived;
+            communication.MessageReceived += communication_MessageReceived;
 
             _device.Subscribe();
 

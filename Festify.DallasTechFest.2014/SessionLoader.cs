@@ -36,6 +36,13 @@ namespace Festify.DallasTechFest._2014
 
         private async Task LoadAsync()
         {
+            while (await _device.Community.SynchronizeAsync()) ;
+            if (_device.Community.LastException != null)
+            {
+                Output(_device.Community.LastException.Message);
+                return;
+            }
+
             await _device.CreateIndividualAsync();
 
             HttpResponseMessage sessionsResponse = await _httpClient.GetAsync("sessions");
