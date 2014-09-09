@@ -35,7 +35,7 @@ namespace Festify.ViewModels.Main
             get
             {
                 return Get(() =>
-                    _synchronizationService.Device.Conference.Name);
+                    _synchronizationService.Device.Conference.Name.Value);
             }
         }
 
