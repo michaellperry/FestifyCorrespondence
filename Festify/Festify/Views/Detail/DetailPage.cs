@@ -22,12 +22,12 @@ namespace Festify.Views.Detail
                 RowDefinitions =
                 {
                     new RowDefinition { Height = GridLength.Auto },
-                    new RowDefinition { Height = 200 },
+                    new RowDefinition { Height = 150 },
                     new RowDefinition { Height = GridLength.Auto }
                 },
                 ColumnDefinitions =
                 {
-                    new ColumnDefinition { Width = 200 },
+                    new ColumnDefinition { Width = 150 },
                     new ColumnDefinition { Width = GridLength.Auto }
                 }
             };
