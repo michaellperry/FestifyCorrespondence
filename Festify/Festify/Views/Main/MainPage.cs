@@ -20,12 +20,6 @@ namespace Festify.Views.Main
             _viewModel = viewModel;
             BindingContext = _viewModel;
 
-            var exception = new Label();
-            exception.SetBinding<MainViewModel>(Label.TextProperty, vm => vm.Exception);
-
-            var title = new Label();
-            title.SetBinding<MainViewModel>(Label.TextProperty, vm => vm.Name);
-
             var times = new ListView();
             times.SetBinding<MainViewModel>(ListView.ItemsSourceProperty, vm => vm.Times);
             times.ItemTemplate = new DataTemplate(() =>
@@ -38,15 +32,7 @@ namespace Festify.Views.Main
             });
             times.ItemSelected += TimeSelected;
 
-            var content = new StackLayout
-            {
-                VerticalOptions = LayoutOptions.FillAndExpand
-            };
-            content.Children.Add(exception);
-            content.Children.Add(title);
-            content.Children.Add(times);
-
-            Content = content;
+            Content = times;
         }
 
         private void TimeSelected(object sender, SelectedItemChangedEventArgs e)
