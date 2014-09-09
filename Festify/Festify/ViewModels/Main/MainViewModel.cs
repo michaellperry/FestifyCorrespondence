@@ -44,11 +44,10 @@ namespace Festify.ViewModels.Main
             get
             {
                 return GetCollection(() =>
-                    Enumerable.Empty<TimeHeader>());
-                    //from day in _synchronizationService.Device.Conference.Days
-                    //from time in day.Times
-                    //orderby time.Start
-                    //select new TimeHeader(time, _synchronizationService.Individual));
+                    from day in _synchronizationService.Device.Conference.Days
+                    from time in day.Times
+                    orderby time.Start
+                    select new TimeHeader(time, _synchronizationService.Individual));
             }
         }
     }
