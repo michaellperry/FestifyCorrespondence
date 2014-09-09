@@ -19,17 +19,24 @@ namespace Festify.ViewModels.Main
         {
             get
             {
-                var exception = _synchronizationService.Community.LastException;
-                if (exception == null)
-                    return String.Empty;
-                else
-                    return exception.Message;
+                return Get(() =>
+                {
+                    var exception = _synchronizationService.Community.LastException;
+                    if (exception == null)
+                        return String.Empty;
+                    else
+                        return exception.Message;
+                });
             }
         }
 
         public string Title
         {
-            get { return Get(() => _synchronizationService.Device.Conference.Name); }
+            get
+            {
+                return Get(() =>
+                    _synchronizationService.Device.Conference.Name);
+            }
         }
 
         public IEnumerable<TimeHeader> Times
@@ -37,10 +44,11 @@ namespace Festify.ViewModels.Main
             get
             {
                 return GetCollection(() =>
-                    from day in _synchronizationService.Device.Conference.Days
-                    from time in day.Times
-                    orderby time.Start
-                    select new TimeHeader(time, _synchronizationService.Individual));
+                    Enumerable.Empty<TimeHeader>());
+                    //from day in _synchronizationService.Device.Conference.Days
+                    //from time in day.Times
+                    //orderby time.Start
+                    //select new TimeHeader(time, _synchronizationService.Individual));
             }
         }
     }

@@ -5,6 +5,9 @@ using UpdateControls.Correspondence;
 using UpdateControls.Correspondence.BinaryHTTPClient;
 using UpdateControls.Correspondence.Memory;
 using UpdateControls.Correspondence.Strategy;
+using System;
+using System.Linq;
+using UpdateControls.Correspondence.Mementos;
 
 namespace Festify.Synchronization
 {
@@ -16,11 +19,7 @@ namespace Festify.Synchronization
 
         public void Initialize()
         {
-#if WINDOWS_PHONE
-            _storage = new UpdateControls.Correspondence.FileStream.FileStreamStorageStrategy();
-#else
             _storage = new MemoryStorageStrategy();
-#endif
             _device = new Device(_storage);
 
             var http = new HTTPConfigurationProvider();
@@ -41,7 +40,9 @@ namespace Festify.Synchronization
 
         void communication_MessageReceived(UpdateControls.Correspondence.Mementos.FactTreeMemento obj)
         {
-            Debug.WriteLine("Message received");
+            Debug.WriteLine(String.Format("Message received {0}",
+                string.Join(", ",
+                    obj.Facts.OfType<IdentifiedFactMemento>().Select(f => f.Memento.FactType.TypeName))));
         }
 
         void Community_FactReceived()
@@ -51,7 +52,7 @@ namespace Festify.Synchronization
 
         void Community_FactAdded(CorrespondenceFact obj)
         {
-            Debug.WriteLine("Fact added");
+            Debug.WriteLine(String.Format("Fact added {0}", obj.GetType()));
         }
 
         public Device Device
