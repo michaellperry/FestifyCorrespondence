@@ -20,12 +20,6 @@ namespace Festify.Views.TimeSlot
             _viewModel = viewModel;
             BindingContext = _viewModel;
 
-            var content = new StackLayout();
-
-            Label title = new Label();
-            title.SetBinding<TimeSlotViewModel>(Label.TextProperty, vm => vm.Time);
-            content.Children.Add(title);
-
             var sessions = new ListView();
             sessions.SetBinding<TimeSlotViewModel>(ListView.ItemsSourceProperty, vm => vm.Sessions);
             sessions.ItemTemplate = new DataTemplate(() =>
@@ -37,9 +31,8 @@ namespace Festify.Views.TimeSlot
                 return cell;
             });
             sessions.ItemSelected += sessions_ItemSelected;
-            content.Children.Add(sessions);
 
-            Content = content;
+            Content = sessions;
         }
 
         void sessions_ItemSelected(object sender, SelectedItemChangedEventArgs e)
