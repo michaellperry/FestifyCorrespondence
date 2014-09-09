@@ -24,7 +24,7 @@ namespace Festify.Views.Main
             exception.SetBinding<MainViewModel>(Label.TextProperty, vm => vm.Exception);
 
             var title = new Label();
-            title.SetBinding<MainViewModel>(Label.TextProperty, vm => vm.Title);
+            title.SetBinding<MainViewModel>(Label.TextProperty, vm => vm.Name);
 
             var times = new ListView();
             times.SetBinding<MainViewModel>(ListView.ItemsSourceProperty, vm => vm.Times);

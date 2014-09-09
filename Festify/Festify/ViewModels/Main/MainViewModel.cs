@@ -30,7 +30,7 @@ namespace Festify.ViewModels.Main
             }
         }
 
-        public string Title
+        public string Name
         {
             get
             {
