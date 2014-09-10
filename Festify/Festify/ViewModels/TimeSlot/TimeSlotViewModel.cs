@@ -20,7 +20,7 @@ namespace Festify.ViewModels.TimeSlot
 
         public string Time
         {
-            get { return _time.Start.ToLocalTime().ToShortTimeString(); }
+            get { return Get(() => _time.Start.ToLocalTime().ToShortTimeString()); }
         }
 
         public Individual Individual
@@ -32,10 +32,10 @@ namespace Festify.ViewModels.TimeSlot
         {
             get
             {
-                return
+                return GetCollection(() =>
                     from sessionPlace in _time.AvailableSessions
                     orderby sessionPlace.Session.Name.Value
-                    select new SessionHeader(sessionPlace, _individual);
+                    select new SessionHeader(sessionPlace, _individual));
             }
         }
 
