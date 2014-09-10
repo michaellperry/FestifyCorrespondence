@@ -13,7 +13,7 @@ namespace Festify.Logic
     public class Device
     {
         private const string ThisIndividual = "Festify.Individual.this";
-        private const string ConferenceId = "{DA90A5C4-29FB-4961-B38B-9759BEE70ACF}";
+        private const string ConferenceId = "{D5AE8D88-A44E-4395-8B5E-571E35A273FF}";
 
         private Community _community;
         private Independent<Individual> _individual = new Independent<Individual>(

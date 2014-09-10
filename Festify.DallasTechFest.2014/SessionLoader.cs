@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Festify.Model;
 using UpdateControls.Correspondence.BinaryHTTPClient;
+using UpdateControls.Correspondence.Memory;
 
 namespace Festify.DallasTechFest._2014
 {
@@ -20,11 +21,11 @@ namespace Festify.DallasTechFest._2014
 
         public SessionLoader()
         {
-            _device = new Device(
-                new FileStreamStorageStrategy(
-                    Path.Combine(
-                        Environment.CurrentDirectory,
-                        "Correspondence")));
+            FileStreamStorageStrategy fileStream = new FileStreamStorageStrategy(
+                Path.Combine(
+                    Environment.CurrentDirectory,
+                    "Correspondence"));
+            _device = new Device(fileStream);
             var http = new HTTPConfigurationProvider();
             var communication = new BinaryHTTPAsynchronousCommunicationStrategy(http);
             _device.Community.AddAsynchronousCommunicationStrategy(communication);
@@ -80,8 +81,9 @@ namespace Festify.DallasTechFest._2014
 
             var conferenceDate = new DateTime(2014, 10, 10, 0, 0, 0, DateTimeKind.Utc);
             var day = await community.AddFactAsync(new Day(conference, conferenceDate));
-            var start = conferenceDate + DateTime.Parse(sessionDto.timeSlot).TimeOfDay;
+            var start = (conferenceDate + DateTime.Parse(sessionDto.timeSlot).TimeOfDay).AddHours(5);
             var time = await community.AddFactAsync(new Time(day, start));
+            Output(start.ToLocalTime().ToString());
 
             var room = await FindRoom(sessionDto.room);
 
