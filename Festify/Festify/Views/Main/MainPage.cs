@@ -20,6 +20,8 @@ namespace Festify.Views.Main
             _viewModel = viewModel;
             BindingContext = _viewModel;
 
+            this.SetBinding<MainViewModel>(Page.TitleProperty, vm => vm.Name);
+
             var times = new ListView();
             times.SetBinding<MainViewModel>(ListView.ItemsSourceProperty, vm => vm.Times);
             times.ItemTemplate = new DataTemplate(() =>

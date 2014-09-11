@@ -33,7 +33,7 @@ namespace Festify.ViewModels.Detail
             get
             {
                 return Get(() => _session.CurrentSessionPlaces
-                    .Select(sp => sp.Place.PlaceTime.Start.ToLocalTime().ToShortTimeString())
+                    .Select(sp => sp.Place.PlaceTime.Start.AddHours(-5).ToShortTimeString())
                     .FirstOrDefault());
             }
         }

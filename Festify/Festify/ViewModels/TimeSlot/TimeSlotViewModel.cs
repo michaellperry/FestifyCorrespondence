@@ -20,7 +20,7 @@ namespace Festify.ViewModels.TimeSlot
 
         public string Time
         {
-            get { return Get(() => _time.Start.ToLocalTime().ToShortTimeString()); }
+            get { return Get(() => _time.Start.AddHours(-5).ToShortTimeString()); }
         }
 
         public Individual Individual

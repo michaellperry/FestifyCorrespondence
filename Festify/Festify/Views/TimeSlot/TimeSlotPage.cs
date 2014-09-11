@@ -20,6 +20,8 @@ namespace Festify.Views.TimeSlot
             _viewModel = viewModel;
             BindingContext = _viewModel;
 
+            this.SetBinding<TimeSlotViewModel>(Page.TitleProperty, vm => vm.Time);
+
             var sessions = new ListView();
             sessions.SetBinding<TimeSlotViewModel>(ListView.ItemsSourceProperty, vm => vm.Sessions);
             sessions.ItemTemplate = new DataTemplate(() =>

@@ -32,7 +32,7 @@ namespace Festify.ViewModels.Main
                         ? "Breakout Session"
                         : sessionPlace.Session.Name.Value;
                     return String.Format("{0}: {1}",
-                        _time.Start.ToLocalTime().ToShortTimeString(),
+                        _time.Start.AddHours(-5).ToShortTimeString(),
                         sessionName);
                 });
             }
