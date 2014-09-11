@@ -52,5 +52,15 @@ namespace Festify.ViewModels.Detail
                     .FirstOrDefault());
             }
         }
+
+        public string Description
+        {
+            get { return Get(() => _session.Description.Value.JoinSegments()); }
+        }
+
+        public string Bio
+        {
+            get { return Get(() => _session.Speaker.Bio.Value.JoinSegments()); }
+        }
     }
 }

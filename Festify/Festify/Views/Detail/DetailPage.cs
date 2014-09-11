@@ -28,7 +28,7 @@ namespace Festify.Views.Detail
                 ColumnDefinitions =
                 {
                     new ColumnDefinition { Width = 150 },
-                    new ColumnDefinition { Width = GridLength.Auto }
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
                 }
             };
 
@@ -48,12 +48,23 @@ namespace Festify.Views.Detail
                 }
             }, 1, 1);
 
+            content.Children.Add(new StackLayout
+            {
+                Children =
+                {
+                    LabelFor(vm => vm.Name),
+                    LabelFor(vm => vm.Description),
+                    LabelFor(vm => vm.Speaker),
+                    LabelFor(vm => vm.Bio)
+                }
+            }, 0, 2, 2, 3);
+
             Content = content;
         }
 
         private static Label LabelFor(Expression<Func<DetailViewModel, object>> property)
         {
-            Label name = new Label();
+            Label name = new Label() { LineBreakMode=LineBreakMode.WordWrap };
             name.SetBinding<DetailViewModel>(Label.TextProperty, property);
             return name;
         }
