@@ -42,6 +42,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SegmentExtensions.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="Speaker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UpdateControls">

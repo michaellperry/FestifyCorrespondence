@@ -9,6 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Festify.Model;
+using Festify.Logic;
 using UpdateControls.Correspondence.BinaryHTTPClient;
 using UpdateControls.Correspondence.Memory;
 
@@ -91,9 +92,11 @@ namespace Festify.DallasTechFest._2014
 
             var speaker = await FindSpeaker(sessionDto.speakerName);
             speaker.ImageUrl = sessionDto.speakerPhotoUrl;
+            await speaker.SetBio(sessionDto.speakerBio);
 
             var session = await FindSession(speaker, sessionDto.id);
             session.Name = sessionDto.title;
+            await session.SetDescription(sessionDto.@abstract);
 
             var sessionPlaces = await session.CurrentSessionPlaces.EnsureAsync();
             if (sessionPlaces.Count() == 1)
