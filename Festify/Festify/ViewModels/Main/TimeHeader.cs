@@ -100,6 +100,9 @@ namespace Festify.ViewModels.Main
             {
                 Session likedSession = s.Session;
                 Session listedSession = sessionPlace.Session;
+                bool similar = likedSession.GetHashCode() == listedSession.GetHashCode();
+                if (!similar)
+                    return false;
                 bool same = Object.Equals(likedSession, listedSession);
                 return same;
             });

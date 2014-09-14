@@ -70,6 +70,7 @@ namespace Festify.Dependency
     internal abstract class DependentPropertyBase
     {
         public abstract object Value { get; }
+        public abstract void Dispose();
     }
 
     internal class DependentAtom<T> : DependentPropertyBase, IUpdatable
@@ -93,6 +94,11 @@ namespace Festify.Dependency
         public void UpdateNow()
         {
             _firePropertyChanged();
+        }
+
+        public override void Dispose()
+        {
+            _depValue.Dispose();
         }
     }
 
@@ -146,9 +152,14 @@ namespace Festify.Dependency
         {
             _depCollection.OnGet();
         }
+
+        public override void Dispose()
+        {
+            _depCollection.Dispose();
+        }
     }
 
-    public class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -180,6 +191,14 @@ namespace Festify.Dependency
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void Dispose()
+        {
+            foreach (var pair in _dependentPropertyByName)
+            {
+                pair.Value.Dispose();
+            }
         }
     }
 }
