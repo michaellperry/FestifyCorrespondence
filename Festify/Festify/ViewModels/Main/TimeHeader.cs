@@ -96,7 +96,13 @@ namespace Festify.ViewModels.Main
 
         private bool IsLiked(SessionPlace sessionPlace)
         {
-            return _individual.LikedSessions.Any(s => Object.Equals(s.Session, sessionPlace.Session));
+            return _individual.LikedSessions.Any(delegate(LikeSession s)
+            {
+                Session likedSession = s.Session;
+                Session listedSession = sessionPlace.Session;
+                bool same = Object.Equals(likedSession, listedSession);
+                return same;
+            });
         }
     }
 }
