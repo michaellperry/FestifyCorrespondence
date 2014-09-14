@@ -25,6 +25,11 @@ namespace Festify.Dependency
         {
             if (_inCollection)
                 _collection.Remove(_item);
+            var disposable = _item as IDisposable;
+            if (disposable != null)
+            {
+                disposable.Dispose();
+            }
         }
 
         public void EnsureInCollection(int index)
@@ -195,10 +200,16 @@ namespace Festify.Dependency
 
         public void Dispose()
         {
+            OnDisposed();
             foreach (var pair in _dependentPropertyByName)
             {
                 pair.Value.Dispose();
             }
+        }
+
+        protected virtual void OnDisposed()
+        {
+
         }
     }
 }

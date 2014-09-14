@@ -107,5 +107,11 @@ namespace Festify.ViewModels.Main
                 return same;
             });
         }
+
+        protected override void OnDisposed()
+        {
+            var hash = _time.GetHashCode();
+            System.Diagnostics.Debug.WriteLine(String.Format("Disposed {0}", hash));
+        }
     }
 }
