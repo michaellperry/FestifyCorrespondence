@@ -38,7 +38,6 @@ key:
 
 mutable:
     publish string name;
-	publish Survey conferenceSurvey;
 	publish string mapUrl;
 
 query:
@@ -75,33 +74,8 @@ query:
 		ConferenceNotice n : n.conference = this
 	}
 
-	ConferenceSessionSurvey* currentSessionSurveys {
-		ConferenceSessionSurvey s : s.conference = this
-			where s.isCurrent
-	}
-
-	ConferenceSessionSurvey* allSessionSurveys {
-		ConferenceSessionSurvey s : s.conference = this
-	}
-
 	Room* rooms {
 		Room r : r.conference = this
-	}
-}
-
-fact ConferenceSessionSurvey {
-key:
-	publish Conference conference;
-	Survey sessionSurvey;
-	ConferenceSessionSurvey* prior;
-
-query:
-	bool isCurrent {
-		not exists ConferenceSessionSurvey next : next.prior = this
-	}
-
-	SessionEvaluationCompleted* completed {
-		SessionEvaluationCompleted c : c.sessionSurvey = this
 	}
 }
 
@@ -109,34 +83,6 @@ fact Attendee {
 key:
     string identifier;
     Conference conference;
-
-query:
-	Schedule* currentSchedules {
-		Schedule s : s.slot.attendee = this
-			where s.isCurrent
-			  and s.sessionPlaceIsCurrent
-			  and not s.isDeleted
-	}
-
-	Schedule* allSchedules {
-		Schedule s : s.slot.attendee = this
-			where s.sessionPlaceIsCurrent
-			  and not s.isDeleted
-	}
-
-	Session* scheduledSessions {
-		Schedule s : s.slot.attendee = this
-			where s.isCurrent
-			  and s.sessionPlaceIsCurrent
-		Session session : s.sessionPlace.session = session
-	}
-
-	SessionPlace* scheduledSessionPlaces {
-		Schedule s : s.slot.attendee = this
-			where s.isCurrent
-			  and s.sessionPlaceIsCurrent
-		SessionPlace sessionPlace : s.sessionPlace = sessionPlace
-	}
 }
 
 fact IndividualAttendee {
@@ -199,20 +145,6 @@ query:
 fact TimeUndelete {
 key:
 	TimeDelete undeleted;
-}
-
-fact Slot {
-key:
-    Attendee attendee;
-    publish Time slotTime;
-
-query:
-	Schedule* currentSchedules {
-		Schedule s : s.slot = this
-			where s.isCurrent
-			  and s.sessionPlaceIsCurrent
-			  and not s.isDeleted
-	}
 }
 
 fact Room {
@@ -375,130 +307,6 @@ query:
 
 	bool timeIsDeleted {
 		exists TimeDelete d : d.deleted = this.place.placeTime
-	}
-}
-
-fact Schedule {
-key:
-	unique;
-    Slot slot;
-    publish SessionPlace sessionPlace;
-
-query:
-	bool isCurrent {
-		not exists ScheduleRemove r : r.schedule = this
-	}
-
-	bool sessionPlaceIsCurrent {
-		not exists SessionPlace next : next.prior = this.sessionPlace
-	}
-
-	bool isDeleted {
-		exists SessionDelete d : d.deleted = this.sessionPlace.session
-			where not d.isUndeleted
-	}
-
-	SessionEvaluation* completedEvaluations {
-		SessionEvaluation e : e.schedule = this
-			where e.isCompleted
-	}
-}
-
-fact ScheduleRemove {
-key:
-	Schedule schedule;
-}
-
-fact RatingQuestion {
-key:
-	string text;
-}
-
-fact EssayQuestion {
-key:
-	string text;
-}
-
-fact Survey {
-key:
-	RatingQuestion *ratingQuestions;
-	EssayQuestion *essayQuestions;
-}
-
-fact SessionEvaluation {
-key:
-    Schedule schedule;
-	Survey survey;
-
-query:
-	SessionEvaluationRatingAnswer* ratingAnswers {
-		SessionEvaluationRatingAnswer a : a.rating.evaluation = this
-			where a.isCurrent
-	}
-
-	SessionEvaluationEssayAnswer* essayAnswers {
-		SessionEvaluationEssayAnswer a : a.essay.evaluation = this
-			where a.isCurrent
-	}
-
-	bool isCompleted {
-		exists SessionEvaluationCompleted c : c.sessionEvaluation = this
-	}
-}
-
-fact SessionEvaluationCompleted {
-key:
-	publish ConferenceSessionSurvey sessionSurvey;
-	SessionEvaluation sessionEvaluation;
-	SessionEvaluationRatingAnswer* ratingAnswers;
-	SessionEvaluationEssayAnswer* essayAnswers;
-}
-
-fact SessionEvaluationRating {
-key:
-	SessionEvaluation evaluation;
-	RatingQuestion question;
-
-query:
-	SessionEvaluationRatingAnswer* currentAnswers {
-		SessionEvaluationRatingAnswer a : a.rating = this
-			where a.isCurrent
-	}
-}
-
-fact SessionEvaluationRatingAnswer {
-key:
-	SessionEvaluationRating rating;
-	int value;
-	SessionEvaluationRatingAnswer* prior;
-
-query:
-	bool isCurrent {
-		not exists SessionEvaluationRatingAnswer next : next.prior = this
-	}
-}
-
-fact SessionEvaluationEssay {
-key:
-	SessionEvaluation evaluation;
-	EssayQuestion question;
-
-query:
-	SessionEvaluationEssayAnswer* currentAnswers {
-		SessionEvaluationEssayAnswer a : a.essay = this
-			where a.isCurrent
-	}
-}
-
-fact SessionEvaluationEssayAnswer {
-key:
-	SessionEvaluationEssay essay;
-	string value;
-	SessionEvaluationEssayAnswer* prior;
-
-query:
-	bool isCurrent {
-		not exists SessionEvaluationEssayAnswer next : next.prior = this
 	}
 }
 
