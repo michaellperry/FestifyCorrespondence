@@ -51,12 +51,12 @@ namespace Festify.ViewModels.Main
             {
                 return Get(delegate()
                 {
-                    return
-                        _sessionPlaces.Count() == 0
-                            ? "Tap to select" :
-                        _sessionPlaces.Count() > 1
-                            ? "More than one selected"
-                            : _sessionPlaces.Single().Place.Room.RoomNumber.Value;
+                    if (_sessionPlaces.Count() == 0)
+                        return "Tap to select";
+                    else if (_sessionPlaces.Count() > 1)
+                        return "More than one selected";
+                    else
+                        return _sessionPlaces.Single().Place.Room.RoomNumber.Value;
                 });
             }
         }
