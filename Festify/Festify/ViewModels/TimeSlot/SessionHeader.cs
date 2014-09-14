@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Festify.Model;
 using Festify.Dependency;
+using System.Linq;
 
 namespace Festify.ViewModels.TimeSlot
 {
@@ -29,7 +30,7 @@ namespace Festify.ViewModels.TimeSlot
 
         public string Name
         {
-            get { return Get(() => _sessionPlace.Session.Name); }
+            get { return Get(() => (IsLiked ? "<3 " : "") + _sessionPlace.Session.Name); }
         }
 
         public string Speaker
@@ -52,6 +53,14 @@ namespace Festify.ViewModels.TimeSlot
         public override int GetHashCode()
         {
             return _sessionPlace.GetHashCode();
+        }
+
+        private bool IsLiked
+        {
+            get
+            {
+                return _individual.LikedSessions.Any(s => s.Session == _sessionPlace.Session);
+            }
         }
     }
 }

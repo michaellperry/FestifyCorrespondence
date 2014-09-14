@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Festify.ViewModels.Detail
 {
@@ -61,6 +62,30 @@ namespace Festify.ViewModels.Detail
         public string Bio
         {
             get { return Get(() => _session.Speaker.Bio.Value.JoinSegments()); }
+        }
+
+        public ICommand Like
+        {
+            get
+            {
+                return MakeCommand
+                    .Do(delegate
+                    {
+                        _individual.Community.Perform(async delegate
+                        {
+                            var attendee = (await _individual.Attendees.EnsureAsync()).FirstOrDefault();
+                            if (attendee == null)
+                            {
+                                var conference = await _session.Conference.EnsureAsync();
+                                var identifier = Guid.NewGuid().ToString();
+                                attendee = await _individual.Community.AddFactAsync(new Attendee(conference, identifier));
+                                await _individual.Community.AddFactAsync(new IndividualAttendee(_individual, attendee));
+                            }
+
+                            await _individual.Community.AddFactAsync(new LikeSession(attendee, _session));
+                        });
+                    });
+            }
         }
     }
 }

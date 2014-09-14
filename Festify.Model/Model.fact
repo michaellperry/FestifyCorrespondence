@@ -14,6 +14,11 @@ query:
         EnableToastNotification d : d.individual = this
             where not d.isDisabled
     }
+
+    LikeSession* likedSessions {
+		IndividualAttendee ia : ia.individual = this
+        LikeSession l : l.attendee = ia.attendee
+    }
 }
 
 fact EnableToastNotification {
@@ -313,4 +318,21 @@ query:
 fact DocumentSegment {
 key:
 	string text;
+}
+
+fact LikeSession {
+key:
+    unique;
+    publish Attendee attendee;
+    publish Session session;
+
+query:
+    bool isDeleted {
+        exists UnlikeSession u : u.likeSession = this
+    }
+}
+
+fact UnlikeSession {
+key:
+    LikeSession likeSession;
 }

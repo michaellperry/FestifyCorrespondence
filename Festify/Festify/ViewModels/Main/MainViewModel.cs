@@ -46,7 +46,7 @@ namespace Festify.ViewModels.Main
                 return GetCollection(() =>
                     from day in _synchronizationService.Device.Conference.Days
                     from time in day.Times
-                    orderby time.Start
+                    //orderby time.Start
                     select new TimeHeader(time, _synchronizationService.Individual));
             }
         }

@@ -1,7 +1,10 @@
 using Festify.Dependency;
 using Festify.Model;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using UpdateControls.Collections;
+using UpdateControls.Fields;
 
 namespace Festify.ViewModels.Main
 {
@@ -10,10 +13,15 @@ namespace Festify.ViewModels.Main
         private readonly Time _time;
         private readonly Individual _individual;
 
+        private DependentList<SessionPlace> _sessionPlaces;
+
         public TimeHeader(Time time, Individual individual)
         {
             _time = time;
             _individual = individual;
+
+            _sessionPlaces = new DependentList<SessionPlace>(() =>
+                _time.AvailableSessions.Where(IsLiked));
         }
 
         public Time Time
@@ -27,10 +35,9 @@ namespace Festify.ViewModels.Main
             {
                 return Get(delegate()
                 {
-                    var sessionPlace = SessionPlace;
-                    var sessionName = sessionPlace == null
+                    var sessionName = _sessionPlaces.Count() != 1
                         ? "Breakout Session"
-                        : sessionPlace.Session.Name.Value;
+                        : _sessionPlaces.Single().Session.Name.Value;
                     return String.Format("{0}: {1}",
                         _time.Start.AddHours(-5).ToShortTimeString(),
                         sessionName);
@@ -44,10 +51,12 @@ namespace Festify.ViewModels.Main
             {
                 return Get(delegate()
                 {
-                    var sessionPlace = SessionPlace;
-                    return sessionPlace == null
-                        ? "Tap to select"
-                        : sessionPlace.Place.Room.RoomNumber.Value;
+                    return
+                        _sessionPlaces.Count() == 0
+                            ? "Tap to select" :
+                        _sessionPlaces.Count() > 1
+                            ? "More than one selected"
+                            : _sessionPlaces.Single().Place.Room.RoomNumber.Value;
                 });
             }
         }
@@ -58,23 +67,10 @@ namespace Festify.ViewModels.Main
             {
                 return Get(delegate()
                 {
-                    var sessionPlace = SessionPlace;
-                    return sessionPlace == null
+                    return _sessionPlaces.Count() != 1
                         ? "https://jobs.thejobnetwork.com/Content/CandidateNet/Images/QuestionMark_IconTransparent.png"
-                        : sessionPlace.Session.Speaker.ImageUrl.Value;
+                        : _sessionPlaces.Single().Session.Speaker.ImageUrl.Value;
                 });
-            }
-        }
-
-        private SessionPlace SessionPlace
-        {
-            get
-            {
-                var sessionPlaces = _time.AvailableSessions;
-                if (sessionPlaces.Count() == 1)
-                    return sessionPlaces.Single();
-                else
-                    return null;
             }
         }
 
@@ -87,12 +83,20 @@ namespace Festify.ViewModels.Main
             if (that == null)
                 return false;
 
-            return Object.Equals(this._time, that._time);
+            return
+                Object.Equals(this._time, that._time) &&
+                Object.Equals(this._individual, that._individual);
         }
 
         public override int GetHashCode()
         {
-            return _time.GetHashCode();
+            return _time.GetHashCode() + _individual.GetHashCode();
+        }
+
+
+        private bool IsLiked(SessionPlace sessionPlace)
+        {
+            return _individual.LikedSessions.Any(s => Object.Equals(s.Session, sessionPlace.Session));
         }
     }
 }

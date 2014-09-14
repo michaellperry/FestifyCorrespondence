@@ -44,7 +44,8 @@ namespace Festify.Views.Detail
                 {
                     LabelFor(vm => vm.Time),
                     LabelFor(vm => vm.Speaker),
-                    LabelFor(vm => vm.Room)
+                    LabelFor(vm => vm.Room),
+                    LikeButton()
                 }
             }, 1, 1);
 
@@ -67,6 +68,14 @@ namespace Festify.Views.Detail
             Label name = new Label() { LineBreakMode=LineBreakMode.WordWrap };
             name.SetBinding<DetailViewModel>(Label.TextProperty, property);
             return name;
+        }
+
+        private static Button LikeButton()
+        {
+            Button button = new Button();
+            button.Text = "Like";
+            button.SetBinding<DetailViewModel>(Button.CommandProperty, vm => vm.Like);
+            return button;
         }
     }
 }

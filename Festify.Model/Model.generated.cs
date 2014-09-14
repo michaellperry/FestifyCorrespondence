@@ -61,6 +61,9 @@ digraph "Festify.Model"
     SessionPlace -> Session
     SessionPlace -> Place
     SessionPlace -> SessionPlace [label="  *"]
+    LikeSession -> Attendee [color="red"]
+    LikeSession -> Session [color="red"]
+    UnlikeSession -> LikeSession
 }
 **/
 
@@ -169,6 +172,20 @@ namespace Festify.Model
             }
             return _cacheQueryIsToastNotificationEnabled;
 		}
+        private static Query _cacheQueryLikedSessions;
+
+        public static Query GetQueryLikedSessions()
+		{
+            if (_cacheQueryLikedSessions == null)
+            {
+			    _cacheQueryLikedSessions = new Query()
+		    		.JoinSuccessors(IndividualAttendee.GetRoleIndividual())
+		    		.JoinPredecessors(IndividualAttendee.GetRoleAttendee())
+		    		.JoinSuccessors(LikeSession.GetRoleAttendee())
+                ;
+            }
+            return _cacheQueryLikedSessions;
+		}
 
         // Predicates
 
@@ -182,6 +199,7 @@ namespace Festify.Model
         // Results
         private Result<Attendee> _attendees;
         private Result<EnableToastNotification> _isToastNotificationEnabled;
+        private Result<LikeSession> _likedSessions;
 
         // Business constructor
         public Individual(
@@ -202,6 +220,7 @@ namespace Festify.Model
         {
             _attendees = new Result<Attendee>(this, GetQueryAttendees(), Attendee.GetUnloadedInstance, Attendee.GetNullInstance);
             _isToastNotificationEnabled = new Result<EnableToastNotification>(this, GetQueryIsToastNotificationEnabled(), EnableToastNotification.GetUnloadedInstance, EnableToastNotification.GetNullInstance);
+            _likedSessions = new Result<LikeSession>(this, GetQueryLikedSessions(), LikeSession.GetUnloadedInstance, LikeSession.GetNullInstance);
         }
 
         // Predecessor access
@@ -218,6 +237,10 @@ namespace Festify.Model
         public Result<EnableToastNotification> IsToastNotificationEnabled
         {
             get { return _isToastNotificationEnabled; }
+        }
+        public Result<LikeSession> LikedSessions
+        {
+            get { return _likedSessions; }
         }
 
         // Mutable property access
@@ -5965,6 +5988,307 @@ namespace Festify.Model
 
     }
     
+    public partial class LikeSession : CorrespondenceFact
+    {
+		// Factory
+		internal class CorrespondenceFactFactory : ICorrespondenceFactFactory
+		{
+			private IDictionary<Type, IFieldSerializer> _fieldSerializerByType;
+
+			public CorrespondenceFactFactory(IDictionary<Type, IFieldSerializer> fieldSerializerByType)
+			{
+				_fieldSerializerByType = fieldSerializerByType;
+			}
+
+			public CorrespondenceFact CreateFact(FactMemento memento)
+			{
+				LikeSession newFact = new LikeSession(memento);
+
+				// Create a memory stream from the memento data.
+				using (MemoryStream data = new MemoryStream(memento.Data))
+				{
+					using (BinaryReader output = new BinaryReader(data))
+					{
+						newFact._unique = (Guid)_fieldSerializerByType[typeof(Guid)].ReadData(output);
+					}
+				}
+
+				return newFact;
+			}
+
+			public void WriteFactData(CorrespondenceFact obj, BinaryWriter output)
+			{
+				LikeSession fact = (LikeSession)obj;
+				_fieldSerializerByType[typeof(Guid)].WriteData(output, fact._unique);
+			}
+
+            public CorrespondenceFact GetUnloadedInstance()
+            {
+                return LikeSession.GetUnloadedInstance();
+            }
+
+            public CorrespondenceFact GetNullInstance()
+            {
+                return LikeSession.GetNullInstance();
+            }
+		}
+
+		// Type
+		internal static CorrespondenceFactType _correspondenceFactType = new CorrespondenceFactType(
+			"Festify.Model.LikeSession", -1764209630);
+
+		protected override CorrespondenceFactType GetCorrespondenceFactType()
+		{
+			return _correspondenceFactType;
+		}
+
+        // Null and unloaded instances
+        public static LikeSession GetUnloadedInstance()
+        {
+            return new LikeSession((FactMemento)null) { IsLoaded = false };
+        }
+
+        public static LikeSession GetNullInstance()
+        {
+            return new LikeSession((FactMemento)null) { IsNull = true };
+        }
+
+        // Ensure
+        public Task<LikeSession> EnsureAsync()
+        {
+            if (_loadedTask != null)
+                return _loadedTask.ContinueWith(t => (LikeSession)t.Result);
+            else
+                return Task.FromResult(this);
+        }
+
+        // Roles
+        private static Role _cacheRoleAttendee;
+        public static Role GetRoleAttendee()
+        {
+            if (_cacheRoleAttendee == null)
+            {
+                _cacheRoleAttendee = new Role(new RoleMemento(
+			        _correspondenceFactType,
+			        "attendee",
+			        Attendee._correspondenceFactType,
+			        true));
+            }
+            return _cacheRoleAttendee;
+        }
+        private static Role _cacheRoleSession;
+        public static Role GetRoleSession()
+        {
+            if (_cacheRoleSession == null)
+            {
+                _cacheRoleSession = new Role(new RoleMemento(
+			        _correspondenceFactType,
+			        "session",
+			        Session._correspondenceFactType,
+			        true));
+            }
+            return _cacheRoleSession;
+        }
+
+        // Queries
+        private static Query _cacheQueryIsDeleted;
+
+        public static Query GetQueryIsDeleted()
+		{
+            if (_cacheQueryIsDeleted == null)
+            {
+			    _cacheQueryIsDeleted = new Query()
+		    		.JoinSuccessors(UnlikeSession.GetRoleLikeSession())
+                ;
+            }
+            return _cacheQueryIsDeleted;
+		}
+
+        // Predicates
+        public static Condition IsDeleted = Condition.WhereIsNotEmpty(GetQueryIsDeleted());
+
+        // Predecessors
+        private PredecessorObj<Attendee> _attendee;
+        private PredecessorObj<Session> _session;
+
+        // Unique
+        private Guid _unique;
+
+        // Fields
+
+        // Results
+
+        // Business constructor
+        public LikeSession(
+            Attendee attendee
+            ,Session session
+            )
+        {
+            _unique = Guid.NewGuid();
+            InitializeResults();
+            _attendee = new PredecessorObj<Attendee>(this, GetRoleAttendee(), attendee);
+            _session = new PredecessorObj<Session>(this, GetRoleSession(), session);
+        }
+
+        // Hydration constructor
+        private LikeSession(FactMemento memento)
+        {
+            InitializeResults();
+            _attendee = new PredecessorObj<Attendee>(this, GetRoleAttendee(), memento, Attendee.GetUnloadedInstance, Attendee.GetNullInstance);
+            _session = new PredecessorObj<Session>(this, GetRoleSession(), memento, Session.GetUnloadedInstance, Session.GetNullInstance);
+        }
+
+        // Result initializer
+        private void InitializeResults()
+        {
+        }
+
+        // Predecessor access
+        public Attendee Attendee
+        {
+            get { return IsNull ? Attendee.GetNullInstance() : _attendee.Fact; }
+        }
+        public Session Session
+        {
+            get { return IsNull ? Session.GetNullInstance() : _session.Fact; }
+        }
+
+        // Field access
+		public Guid Unique { get { return _unique; } }
+
+
+        // Query result access
+
+        // Mutable property access
+
+    }
+    
+    public partial class UnlikeSession : CorrespondenceFact
+    {
+		// Factory
+		internal class CorrespondenceFactFactory : ICorrespondenceFactFactory
+		{
+			private IDictionary<Type, IFieldSerializer> _fieldSerializerByType;
+
+			public CorrespondenceFactFactory(IDictionary<Type, IFieldSerializer> fieldSerializerByType)
+			{
+				_fieldSerializerByType = fieldSerializerByType;
+			}
+
+			public CorrespondenceFact CreateFact(FactMemento memento)
+			{
+				UnlikeSession newFact = new UnlikeSession(memento);
+
+
+				return newFact;
+			}
+
+			public void WriteFactData(CorrespondenceFact obj, BinaryWriter output)
+			{
+				UnlikeSession fact = (UnlikeSession)obj;
+			}
+
+            public CorrespondenceFact GetUnloadedInstance()
+            {
+                return UnlikeSession.GetUnloadedInstance();
+            }
+
+            public CorrespondenceFact GetNullInstance()
+            {
+                return UnlikeSession.GetNullInstance();
+            }
+		}
+
+		// Type
+		internal static CorrespondenceFactType _correspondenceFactType = new CorrespondenceFactType(
+			"Festify.Model.UnlikeSession", 1103775080);
+
+		protected override CorrespondenceFactType GetCorrespondenceFactType()
+		{
+			return _correspondenceFactType;
+		}
+
+        // Null and unloaded instances
+        public static UnlikeSession GetUnloadedInstance()
+        {
+            return new UnlikeSession((FactMemento)null) { IsLoaded = false };
+        }
+
+        public static UnlikeSession GetNullInstance()
+        {
+            return new UnlikeSession((FactMemento)null) { IsNull = true };
+        }
+
+        // Ensure
+        public Task<UnlikeSession> EnsureAsync()
+        {
+            if (_loadedTask != null)
+                return _loadedTask.ContinueWith(t => (UnlikeSession)t.Result);
+            else
+                return Task.FromResult(this);
+        }
+
+        // Roles
+        private static Role _cacheRoleLikeSession;
+        public static Role GetRoleLikeSession()
+        {
+            if (_cacheRoleLikeSession == null)
+            {
+                _cacheRoleLikeSession = new Role(new RoleMemento(
+			        _correspondenceFactType,
+			        "likeSession",
+			        LikeSession._correspondenceFactType,
+			        false));
+            }
+            return _cacheRoleLikeSession;
+        }
+
+        // Queries
+
+        // Predicates
+
+        // Predecessors
+        private PredecessorObj<LikeSession> _likeSession;
+
+        // Fields
+
+        // Results
+
+        // Business constructor
+        public UnlikeSession(
+            LikeSession likeSession
+            )
+        {
+            InitializeResults();
+            _likeSession = new PredecessorObj<LikeSession>(this, GetRoleLikeSession(), likeSession);
+        }
+
+        // Hydration constructor
+        private UnlikeSession(FactMemento memento)
+        {
+            InitializeResults();
+            _likeSession = new PredecessorObj<LikeSession>(this, GetRoleLikeSession(), memento, LikeSession.GetUnloadedInstance, LikeSession.GetNullInstance);
+        }
+
+        // Result initializer
+        private void InitializeResults()
+        {
+        }
+
+        // Predecessor access
+        public LikeSession LikeSession
+        {
+            get { return IsNull ? LikeSession.GetNullInstance() : _likeSession.Fact; }
+        }
+
+        // Field access
+
+        // Query result access
+
+        // Mutable property access
+
+    }
+    
 
 	public class CorrespondenceModel : ICorrespondenceModel
 	{
@@ -5980,6 +6304,9 @@ namespace Festify.Model
 			community.AddQuery(
 				Individual._correspondenceFactType,
 				Individual.GetQueryIsToastNotificationEnabled().QueryDefinition);
+			community.AddQuery(
+				Individual._correspondenceFactType,
+				Individual.GetQueryLikedSessions().QueryDefinition);
 			community.AddType(
 				EnableToastNotification._correspondenceFactType,
 				new EnableToastNotification.CorrespondenceFactFactory(fieldSerializerByType),
@@ -6261,6 +6588,17 @@ namespace Festify.Model
 				DocumentSegment._correspondenceFactType,
 				new DocumentSegment.CorrespondenceFactFactory(fieldSerializerByType),
 				new FactMetadata(new List<CorrespondenceFactType> { DocumentSegment._correspondenceFactType }));
+			community.AddType(
+				LikeSession._correspondenceFactType,
+				new LikeSession.CorrespondenceFactFactory(fieldSerializerByType),
+				new FactMetadata(new List<CorrespondenceFactType> { LikeSession._correspondenceFactType }));
+			community.AddQuery(
+				LikeSession._correspondenceFactType,
+				LikeSession.GetQueryIsDeleted().QueryDefinition);
+			community.AddType(
+				UnlikeSession._correspondenceFactType,
+				new UnlikeSession.CorrespondenceFactFactory(fieldSerializerByType),
+				new FactMetadata(new List<CorrespondenceFactType> { UnlikeSession._correspondenceFactType }));
 		}
 	}
 }
