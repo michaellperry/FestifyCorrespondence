@@ -15,11 +15,15 @@ namespace Festify.Synchronization
     {
         private Device _device;
 
-        private IStorageStrategy _storage;
+        private readonly IStorageStrategy _storage;
+
+        public SynchronizationService(IStorageStrategy storage)
+        {
+            _storage = storage;
+        }
 
         public void Initialize()
         {
-            _storage = new MemoryStorageStrategy();
             _device = new Device(_storage);
 
             var http = new HTTPConfigurationProvider();

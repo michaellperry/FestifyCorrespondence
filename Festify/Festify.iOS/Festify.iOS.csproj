@@ -45,7 +45,7 @@
     <ConsolePause>false</ConsolePause>
     <MtouchDebug>True</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchSdkVersion />
+    <MtouchSdkVersion>7.1</MtouchSdkVersion>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchExtraArgs />
@@ -127,6 +127,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Correspondence.MobileStorage.iOS\Correspondence.MobileStorage.iOS.csproj">
+      <Project>{187fb8e7-5813-4f53-b20f-61a50fd916fa}</Project>
+      <Name>Correspondence.MobileStorage.iOS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Festify.Logic\Festify.Logic.csproj">
       <Project>{d1cae0e5-26b2-41ba-a7dd-3e04c28734e3}</Project>
       <Name>Festify.Logic</Name>

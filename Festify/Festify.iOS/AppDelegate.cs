@@ -6,6 +6,8 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 using Xamarin.Forms;
+using UpdateControls.Correspondence.Strategy;
+using Correspondence.MobileStorage;
 
 namespace Festify.iOS
 {
@@ -31,7 +33,8 @@ namespace Festify.iOS
 
             window = new UIWindow(UIScreen.MainScreen.Bounds);
 
-            window.RootViewController = App.GetMainPage(new DispatchAdapter(this)).CreateViewController();
+            var storage = new MobileStorageStrategy();
+            window.RootViewController = App.GetMainPage(new DispatchAdapter(this), storage).CreateViewController();
 
             window.MakeKeyAndVisible();
 

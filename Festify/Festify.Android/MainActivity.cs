@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 
 using Xamarin.Forms.Platform.Android;
+using UpdateControls.Correspondence.Memory;
 
 namespace Festify.Droid
 {
@@ -20,7 +21,7 @@ namespace Festify.Droid
 
             Xamarin.Forms.Forms.Init(this, bundle);
 
-            SetPage(App.GetMainPage(new DispatchAdapter(this)));
+            SetPage(App.GetMainPage(new DispatchAdapter(this), new MemoryStorageStrategy()));
         }
     }
 }

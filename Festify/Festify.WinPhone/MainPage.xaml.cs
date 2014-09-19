@@ -1,4 +1,5 @@
 ﻿using Microsoft.Phone.Controls;
+using UpdateControls.Correspondence.Memory;
 using Xamarin.Forms;
 
 namespace Festify.WinPhone
@@ -10,7 +11,7 @@ namespace Festify.WinPhone
             InitializeComponent();
 
             Forms.Init();
-            Content = Festify.App.GetMainPage(new DispatchAdapter()).ConvertPageToUIElement(this);
+            Content = Festify.App.GetMainPage(new DispatchAdapter(), new MemoryStorageStrategy()).ConvertPageToUIElement(this);
         }
     }
 }
