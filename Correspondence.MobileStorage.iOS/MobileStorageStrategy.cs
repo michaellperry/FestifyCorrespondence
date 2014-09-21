@@ -85,6 +85,20 @@ namespace Correspondence.MobileStorage
             return Task.FromResult(new SaveResult { WasSaved = true, Id = id });
         }
 
+        public Task<FactID?> FindExistingFactAsync(FactMemento memento)
+        {
+            FactID id;
+            using (var db = new SQLiteConnection(_correspondencePath))
+            {
+                // See if the fact is already in storage.
+                if (FindExistingFact(memento, out id, db))
+                    return Task.FromResult<FactID?>(id);
+
+                // It isn't there.
+                return Task.FromResult<FactID?>(null);
+            }
+        }
+
         public Task<FactMemento> LoadAsync(FactID id)
         {
             using (var db = new SQLiteConnection(_correspondencePath))
@@ -131,17 +145,6 @@ namespace Correspondence.MobileStorage
             }
 
             return Task.FromResult(0);
-        }
-
-        public Task<FactID?> FindExistingFactAsync(FactMemento memento)
-        {
-            throw new NotImplementedException();
-            using (var db = new SQLiteConnection(_correspondencePath))
-            {
-                int factTypeId = 0;
-                var matches = db.Table<FactRecord>().Where(r => r.FactTypeID == factTypeId);
-            }
-            return Task.FromResult<FactID?>(null);
         }
 
         public Task<int> SavePeerAsync(string protocolName, string peerName)
@@ -220,9 +223,9 @@ namespace Correspondence.MobileStorage
         {
             using (var db = new SQLiteConnection(_correspondencePath))
             {
-                var matching = db.Table<TimestampRecord>()
+                var matches = db.Table<TimestampRecord>()
                     .Where(t => t.PeerID == peerId && t.PivotID == pivotId.key);
-                foreach (var match in matching)
+                foreach (var match in matches)
                 {
                     match.DatabaseID = timestamp.DatabaseId;
                     match.FactID = timestamp.Key;
@@ -241,6 +244,26 @@ namespace Correspondence.MobileStorage
                 db.Insert(record);
                 db.Commit();
                 return Task.FromResult(0);
+            }
+        }
+
+        public Task<List<IdentifiedFactMemento>> QueryForFactsAsync(QueryDefinition queryDefinition, FactID startingId, QueryOptions options)
+        {
+            using (var db = new SQLiteConnection(_correspondencePath))
+            {
+                return Task.FromResult(GetMatchingIds(queryDefinition, startingId.key, db)
+                    .Select(id => LoadMementoById(id, db))
+                    .ToList());
+            }
+        }
+
+        public Task<List<FactID>> QueryForIdsAsync(QueryDefinition queryDefinition, FactID startingId)
+        {
+            using (var db = new SQLiteConnection(_correspondencePath))
+            {
+                return Task.FromResult(GetMatchingIds(queryDefinition, startingId.key, db)
+                    .Select(id => new FactID { key = id })
+                    .ToList());
             }
         }
 
@@ -274,16 +297,6 @@ namespace Correspondence.MobileStorage
             return Task.FromResult(new List<MessageMemento>());
         }
 
-        public Task<List<IdentifiedFactMemento>> QueryForFactsAsync(QueryDefinition queryDefinition, FactID startingId, QueryOptions options)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<FactID>> QueryForIdsAsync(QueryDefinition queryDefinition, FactID startingId)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task SaveOutgoingTimestampAsync(int peerId, TimestampID timestamp)
         {
             return Task.FromResult(0);
@@ -314,6 +327,54 @@ namespace Correspondence.MobileStorage
 
             id = new FactID();
             return false;
+        }
+
+        private List<long> GetMatchingIds(QueryDefinition queryDefinition, long startingId, SQLiteConnection db)
+        {
+            List<long> matchingIds = new List<long>() { startingId };
+
+            foreach (var join in queryDefinition.Joins)
+            {
+                int roleId = SaveRole(db, join.Role);
+                if (join.Successor)
+                {
+                    matchingIds = db.Table<PredecessorRecord>()
+                        .Where(p => matchingIds.Contains(p.PredecessorFactID) && p.RoleID == roleId)
+                        .ToList()
+                        .Select(p => p.FactID)
+                        .Where(id => ConditionSatisfied(join.Condition, id, db))
+                        .ToList();
+                }
+                else
+                {
+                    matchingIds = db.Table<PredecessorRecord>()
+                        .Where(p => matchingIds.Contains(p.FactID) && p.RoleID == roleId)
+                        .ToList()
+                        .Select(p => p.PredecessorFactID)
+                        .Where(id => ConditionSatisfied(join.Condition, id, db))
+                        .ToList();
+                }
+            }
+            return matchingIds;
+        }
+
+        private bool ConditionSatisfied(Condition condition, long factId, SQLiteConnection db)
+        {
+            foreach (var clause in condition.Clauses)
+            {
+                var matchingIds = GetMatchingIds(clause.SubQuery, factId, db);
+                if (clause.IsEmpty && matchingIds.Any())
+                    return false;
+                else if (!clause.IsEmpty && !matchingIds.Any())
+                    return false;
+            }
+
+            return true;
+        }
+
+        private IdentifiedFactMemento LoadMementoById(long id, SQLiteConnection db)
+        {
+            throw new NotImplementedException();
         }
 
         private IdentifiedFactMemento LoadMemento(FactRecord factRecord, SQLiteConnection db)
