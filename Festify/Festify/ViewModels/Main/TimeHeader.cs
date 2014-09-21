@@ -68,7 +68,7 @@ namespace Festify.ViewModels.Main
                 return Get(delegate()
                 {
                     return _sessionPlaces.Count() != 1
-                        ? "https://jobs.thejobnetwork.com/Content/CandidateNet/Images/QuestionMark_IconTransparent.png"
+                        ? "http://icons.iconarchive.com/icons/gordon-irving/iWork-10/512/keynote-off-icon.png"
                         : _sessionPlaces.Single().Session.Speaker.ImageUrl.Value;
                 });
             }
