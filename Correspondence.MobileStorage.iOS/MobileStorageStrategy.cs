@@ -32,6 +32,7 @@ namespace Correspondence.MobileStorage
                     db.CreateTable<PredecessorRecord>();
                     db.CreateTable<RoleRecord>();
                     db.CreateTable<NamedFactRecord>();
+                    db.CreateTable<PeerRecord>();
                 }
             }
         }
@@ -141,6 +142,33 @@ namespace Correspondence.MobileStorage
             return Task.FromResult<FactID?>(null);
         }
 
+        public Task<int> SavePeerAsync(string protocolName, string peerName)
+        {
+            using (var db = new SQLiteConnection(_correspondencePath))
+            {
+                // See if the type already exists.
+                var matches = db.Table<PeerRecord>()
+                    .Where(p => p.ProtocolName == protocolName && p.PeerName == peerName);
+
+                foreach (var match in matches)
+                {
+                    return Task.FromResult(match.ID);
+                }
+
+                // If not, create it.
+                var record = new PeerRecord
+                {
+                    ProtocolName = protocolName,
+                    PeerName = peerName
+                };
+                db.Insert(record);
+
+                db.Commit();
+
+                return Task.FromResult(record.ID);
+            }
+        }
+
         public List<IdentifiedFactMemento> GetAllSuccessors(FactID factId)
         {
             throw new NotImplementedException();
@@ -203,12 +231,6 @@ namespace Correspondence.MobileStorage
 
         public Task SaveOutgoingTimestampAsync(int peerId, TimestampID timestamp)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> SavePeerAsync(string protocolName, string peerName)
-        {
-            Debug.WriteLine("SavePeerAsync");
             throw new NotImplementedException();
         }
 

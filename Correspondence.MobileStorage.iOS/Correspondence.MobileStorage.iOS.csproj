@@ -38,6 +38,7 @@
     <Compile Include="FactTypeRecord.cs" />
     <Compile Include="MobileStorageStrategy.cs" />
     <Compile Include="NamedFactRecord.cs" />
+    <Compile Include="PeerRecord.cs" />
     <Compile Include="PredecessorRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleRecord.cs" />
