@@ -31,6 +31,7 @@ namespace Correspondence.MobileStorage
                     db.CreateTable<FactRecord>();
                     db.CreateTable<PredecessorRecord>();
                     db.CreateTable<RoleRecord>();
+                    db.CreateTable<NamedFactRecord>();
                 }
             }
         }
@@ -81,6 +82,38 @@ namespace Correspondence.MobileStorage
             return Task.FromResult(new SaveResult { WasSaved = true, Id = id });
         }
 
+        public Task<FactID?> GetIDAsync(string factName)
+        {
+            using (var db = new SQLiteConnection(_correspondencePath))
+            {
+                var namedFactRecords = db.Table<NamedFactRecord>()
+                    .Where(n => n.Name == factName);
+
+                foreach (var namedFactRecord in namedFactRecords)
+                {
+                    return Task.FromResult<FactID?>(new FactID { key = namedFactRecord.FactID });
+                }
+            }
+
+            return Task.FromResult<FactID?>(null);
+        }
+
+        public Task SetIDAsync(string factName, FactID id)
+        {
+            using (var db = new SQLiteConnection(_correspondencePath))
+            {
+                db.Insert(new NamedFactRecord
+                {
+                    Name = factName,
+                    FactID = id.key
+                });
+
+                db.Commit();
+            }
+
+            return Task.FromResult(0);
+        }
+
         public Task<FactID?> FindExistingFactAsync(FactMemento memento)
         {
             throw new NotImplementedException();
@@ -108,11 +141,6 @@ namespace Correspondence.MobileStorage
         }
 
         public Task<FactID> GetFactIDFromShareAsync(int peerId, FactID remoteFactId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<FactID?> GetIDAsync(string factName)
         {
             throw new NotImplementedException();
         }
@@ -174,11 +202,6 @@ namespace Correspondence.MobileStorage
         }
 
         public Task SaveShareAsync(int peerId, FactID remoteFactId, FactID localFactId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SetIDAsync(string factName, FactID id)
         {
             throw new NotImplementedException();
         }
