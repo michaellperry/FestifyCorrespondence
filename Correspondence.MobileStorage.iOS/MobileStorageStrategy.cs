@@ -22,7 +22,7 @@ namespace Correspondence.MobileStorage
             var myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             _correspondencePath = Path.Combine(myDocuments, "Correspondence.db");
 
-            //File.Delete(_correspondencePath);
+            File.Delete(_correspondencePath);
             if (!File.Exists(_correspondencePath))
             {
                 using (var db = new SQLiteConnection(_correspondencePath))
@@ -360,13 +360,16 @@ namespace Correspondence.MobileStorage
 
         private bool ConditionSatisfied(Condition condition, long factId, SQLiteConnection db)
         {
-            foreach (var clause in condition.Clauses)
+            if (condition != null)
             {
-                var matchingIds = GetMatchingIds(clause.SubQuery, factId, db);
-                if (clause.IsEmpty && matchingIds.Any())
-                    return false;
-                else if (!clause.IsEmpty && !matchingIds.Any())
-                    return false;
+                foreach (var clause in condition.Clauses)
+                {
+                    var matchingIds = GetMatchingIds(clause.SubQuery, factId, db);
+                    if (clause.IsEmpty && matchingIds.Any())
+                        return false;
+                    else if (!clause.IsEmpty && !matchingIds.Any())
+                        return false;
+                }
             }
 
             return true;

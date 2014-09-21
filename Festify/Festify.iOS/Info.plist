@@ -22,9 +22,9 @@
 	<key>MinimumOSVersion</key>
 	<string>5.1</string>
 	<key>CFBundleDisplayName</key>
-	<string>Festify</string>
+	<string>Dallas TechFest 2014</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.facetedworlds.Festify</string>
+	<string>com.dallastechfest.2014</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -33,5 +33,14 @@
 	<string></string>
 	<key>NSMainNibFile~ipad</key>
 	<string></string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Icon@2x.png</string>
+		<string>Icon.png</string>
+		<string>Icon-60@2x.png</string>
+		<string>Icon-Small@2x.png</string>
+		<string>Icon-Small.png</string>
+		<string>Icon-Small-40@2x.png</string>
+	</array>
 </dict>
 </plist>
