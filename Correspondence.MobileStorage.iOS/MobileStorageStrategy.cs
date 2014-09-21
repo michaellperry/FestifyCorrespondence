@@ -82,6 +82,22 @@ namespace Correspondence.MobileStorage
             return Task.FromResult(new SaveResult { WasSaved = true, Id = id });
         }
 
+        public Task<FactMemento> LoadAsync(FactID id)
+        {
+            using (var db = new SQLiteConnection(_correspondencePath))
+            {
+                var factRecords = db.Table<FactRecord>()
+                    .Where(f => f.ID == id.key);
+
+                foreach (var factRecord in factRecords)
+                {
+                    return Task.FromResult(LoadMemento(factRecord, db).Memento);
+                }
+            }
+
+            throw new CorrespondenceException(String.Format("Failed to load fact {0}.", id.key));
+        }
+
         public Task<FactID?> GetIDAsync(string factName)
         {
             using (var db = new SQLiteConnection(_correspondencePath))
@@ -151,11 +167,6 @@ namespace Correspondence.MobileStorage
         }
 
         public Task<FactID?> GetRemoteIdAsync(FactID localFactId, int peerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<FactMemento> LoadAsync(FactID id)
         {
             throw new NotImplementedException();
         }
