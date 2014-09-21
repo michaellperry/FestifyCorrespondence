@@ -33,6 +33,7 @@ namespace Correspondence.MobileStorage
                     db.CreateTable<RoleRecord>();
                     db.CreateTable<NamedFactRecord>();
                     db.CreateTable<PeerRecord>();
+                    db.CreateTable<ClientGuidRecord>();
                 }
             }
         }
@@ -146,7 +147,7 @@ namespace Correspondence.MobileStorage
         {
             using (var db = new SQLiteConnection(_correspondencePath))
             {
-                // See if the type already exists.
+                // See if the peer already exists.
                 var matches = db.Table<PeerRecord>()
                     .Where(p => p.ProtocolName == protocolName && p.PeerName == peerName);
 
@@ -169,34 +170,54 @@ namespace Correspondence.MobileStorage
             }
         }
 
-        public List<IdentifiedFactMemento> GetAllSuccessors(FactID factId)
+        public Task<FactID?> GetRemoteIdAsync(FactID localFactId, int peerId)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<CorrespondenceFactType> GetAllTypes()
-        {
-            throw new NotImplementedException();
+            return Task.FromResult<FactID?>(null);
         }
 
         public Task<Guid> GetClientGuidAsync()
         {
-            throw new NotImplementedException();
+            using (var db = new SQLiteConnection(_correspondencePath))
+            {
+                // See if the record already exists.
+                var matches = db.Table<ClientGuidRecord>();
+
+                foreach (var match in matches)
+                {
+                    return Task.FromResult(match.GUID);
+                }
+
+                // If not, create it.
+                var record = new ClientGuidRecord
+                {
+                    GUID = Guid.NewGuid()
+                };
+                db.Insert(record);
+
+                db.Commit();
+
+                return Task.FromResult(record.GUID);
+            }
+        }
+
+        public List<IdentifiedFactMemento> GetAllSuccessors(FactID factId)
+        {
+            return new List<IdentifiedFactMemento>();
+        }
+
+        public List<CorrespondenceFactType> GetAllTypes()
+        {
+            return new List<CorrespondenceFactType>();
         }
 
         public Task<FactID> GetFactIDFromShareAsync(int peerId, FactID remoteFactId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new FactID());
         }
 
         public List<IdentifiedFactMemento> GetPageOfFactsForType(CorrespondenceFactType type, int page)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<FactID?> GetRemoteIdAsync(FactID localFactId, int peerId)
-        {
-            throw new NotImplementedException();
+            return new List<IdentifiedFactMemento>();
         }
 
         public Task<TimestampID> LoadIncomingTimestampAsync(int peerId, FactID pivotId)
@@ -206,12 +227,12 @@ namespace Correspondence.MobileStorage
 
         public Task<TimestampID> LoadOutgoingTimestampAsync(int peerId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new TimestampID());
         }
 
         public Task<List<MessageMemento>> LoadRecentMessagesForServerAsync(int peerId, TimestampID timestamp)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new List<MessageMemento>());
         }
 
         public Task<List<IdentifiedFactMemento>> QueryForFactsAsync(QueryDefinition queryDefinition, FactID startingId, QueryOptions options)
@@ -231,12 +252,12 @@ namespace Correspondence.MobileStorage
 
         public Task SaveOutgoingTimestampAsync(int peerId, TimestampID timestamp)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(0);
         }
 
         public Task SaveShareAsync(int peerId, FactID remoteFactId, FactID localFactId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(0);
         }
 
         private bool FindExistingFact(FactMemento memento, out FactID id, SQLiteConnection db)
