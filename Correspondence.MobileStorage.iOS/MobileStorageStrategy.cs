@@ -34,6 +34,7 @@ namespace Correspondence.MobileStorage
                     db.CreateTable<NamedFactRecord>();
                     db.CreateTable<PeerRecord>();
                     db.CreateTable<ClientGuidRecord>();
+                    db.CreateTable<TimestampRecord>();
                 }
             }
         }
@@ -200,6 +201,49 @@ namespace Correspondence.MobileStorage
             }
         }
 
+        public Task<TimestampID> LoadIncomingTimestampAsync(int peerId, FactID pivotId)
+        {
+            using (var db = new SQLiteConnection(_correspondencePath))
+            {
+                var matching = db.Table<TimestampRecord>()
+                    .Where(t => t.PeerID == peerId && t.PivotID == pivotId.key);
+                foreach (var match in matching)
+                {
+                    return Task.FromResult(new TimestampID(match.DatabaseID, match.FactID));
+                }
+            }
+
+            return Task.FromResult(new TimestampID());
+        }
+
+        public Task SaveIncomingTimestampAsync(int peerId, FactID pivotId, TimestampID timestamp)
+        {
+            using (var db = new SQLiteConnection(_correspondencePath))
+            {
+                var matching = db.Table<TimestampRecord>()
+                    .Where(t => t.PeerID == peerId && t.PivotID == pivotId.key);
+                foreach (var match in matching)
+                {
+                    match.DatabaseID = timestamp.DatabaseId;
+                    match.FactID = timestamp.Key;
+                    db.Update(match);
+                    db.Commit();
+                    return Task.FromResult(0);
+                }
+
+                var record = new TimestampRecord
+                {
+                    PeerID = peerId,
+                    PivotID = pivotId.key,
+                    DatabaseID = timestamp.DatabaseId,
+                    FactID = timestamp.Key
+                };
+                db.Insert(record);
+                db.Commit();
+                return Task.FromResult(0);
+            }
+        }
+
         public List<IdentifiedFactMemento> GetAllSuccessors(FactID factId)
         {
             return new List<IdentifiedFactMemento>();
@@ -220,11 +264,6 @@ namespace Correspondence.MobileStorage
             return new List<IdentifiedFactMemento>();
         }
 
-        public Task<TimestampID> LoadIncomingTimestampAsync(int peerId, FactID pivotId)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<TimestampID> LoadOutgoingTimestampAsync(int peerId)
         {
             return Task.FromResult(new TimestampID());
@@ -241,11 +280,6 @@ namespace Correspondence.MobileStorage
         }
 
         public Task<List<FactID>> QueryForIdsAsync(QueryDefinition queryDefinition, FactID startingId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SaveIncomingTimestampAsync(int peerId, FactID pivotId, TimestampID timestamp)
         {
             throw new NotImplementedException();
         }

@@ -45,6 +45,7 @@
     <Compile Include="RoleRecord.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
+    <Compile Include="TimestampRecord.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
