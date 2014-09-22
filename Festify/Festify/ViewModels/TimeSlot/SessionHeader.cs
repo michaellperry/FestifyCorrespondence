@@ -4,6 +4,7 @@ using System.Text;
 using Festify.Model;
 using Festify.Dependency;
 using System.Linq;
+using Xamarin.Forms;
 
 namespace Festify.ViewModels.TimeSlot
 {
@@ -23,9 +24,9 @@ namespace Festify.ViewModels.TimeSlot
             get { return _sessionPlace.Session; }
         }
 
-        public string Image
+        public ImageSource Image
         {
-            get { return Get(() => _sessionPlace.Session.Speaker.ImageUrl); }
+            get { return Get(() => ImageSource.FromUri(new Uri(_sessionPlace.Session.Speaker.ImageUrl))); }
         }
 
         public string Name

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Festify.ViewModels.Detail
 {
@@ -24,9 +25,9 @@ namespace Festify.ViewModels.Detail
             get { return Get(() => _session.Name.Value); }
         }
 
-        public string Image
+        public ImageSource Image
         {
-            get { return Get(() => _session.Speaker.ImageUrl.Value); }
+            get { return Get(() => ImageSource.FromUri(new Uri(_session.Speaker.ImageUrl.Value))); }
         }
 
         public string Time

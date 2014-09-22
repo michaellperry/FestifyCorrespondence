@@ -389,7 +389,7 @@ namespace Correspondence.MobileStorage
             };
 
             var predecessorRecords = db.Table<PredecessorRecord>()
-                .Where(p => p.FactID == factRecord.FactTypeID);
+                .Where(p => p.FactID == factRecord.ID);
             foreach (var predecessorRecord in predecessorRecords)
             {
                 factMemento.AddPredecessor(

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UpdateControls.Collections;
 using UpdateControls.Fields;
+using Xamarin.Forms;
 
 namespace Festify.ViewModels.Main
 {
@@ -61,15 +62,15 @@ namespace Festify.ViewModels.Main
             }
         }
 
-        public string Image
+        public ImageSource Image
         {
             get
             {
                 return Get(delegate()
                 {
                     return _sessionPlaces.Count() != 1
-                        ? "http://icons.iconarchive.com/icons/gordon-irving/iWork-10/512/keynote-off-icon.png"
-                        : _sessionPlaces.Single().Session.Speaker.ImageUrl.Value;
+                        ? ImageSource.FromUri(new Uri("http://icons.iconarchive.com/icons/gordon-irving/iWork-10/512/keynote-off-icon.png"))
+                        : ImageSource.FromUri(new Uri(_sessionPlaces.Single().Session.Speaker.ImageUrl.Value));
                 });
             }
         }
