@@ -54,7 +54,6 @@ namespace Festify.Views.Detail
             {
                 Children =
                 {
-                    HeaderFor(vm => vm.Name),
                     LabelFor(vm => vm.Description),
                     HeaderFor(vm => vm.Speaker),
                     LabelFor(vm => vm.Bio)
