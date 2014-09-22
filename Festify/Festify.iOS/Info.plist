@@ -22,7 +22,7 @@
 	<key>MinimumOSVersion</key>
 	<string>5.1</string>
 	<key>CFBundleDisplayName</key>
-	<string>Dallas TechFest 2014</string>
+	<string>DTF 14</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.dallastechfest.2014</string>
 	<key>CFBundleVersion</key>
