@@ -18,6 +18,7 @@ query:
     LikeSession* likedSessions {
 		IndividualAttendee ia : ia.individual = this
         LikeSession l : l.attendee = ia.attendee
+            where not l.isDeleted
     }
 }
 

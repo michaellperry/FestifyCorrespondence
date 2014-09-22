@@ -85,7 +85,6 @@ namespace Festify.Views.Detail
         private static Button LikeButton()
         {
             Button button = new Button();
-            button.Text = "Like";
             button.SetBinding<DetailViewModel>(Button.TextProperty, vm => vm.LikeLabel);
             button.SetBinding<DetailViewModel>(Button.CommandProperty, vm => vm.Like);
             return button;

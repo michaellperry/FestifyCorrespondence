@@ -181,7 +181,8 @@ namespace Festify.Model
 			    _cacheQueryLikedSessions = new Query()
 		    		.JoinSuccessors(IndividualAttendee.GetRoleIndividual())
 		    		.JoinPredecessors(IndividualAttendee.GetRoleAttendee())
-		    		.JoinSuccessors(LikeSession.GetRoleAttendee())
+    				.JoinSuccessors(LikeSession.GetRoleAttendee(), Condition.WhereIsEmpty(LikeSession.GetQueryIsDeleted())
+				)
                 ;
             }
             return _cacheQueryLikedSessions;

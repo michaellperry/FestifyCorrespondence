@@ -69,9 +69,9 @@ namespace Festify.ViewModels.Detail
         {
             get
             {
-                return _individual.LikedSessions.Any(s => s.Session == _session)
+                return Get(() => _individual.LikedSessions.Any(s => s.Session == _session)
                     ? "Unlike"
-                    : "Like";
+                    : "Like");
             }
         }
 

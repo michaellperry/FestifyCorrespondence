@@ -31,7 +31,7 @@ namespace Festify.ViewModels.TimeSlot
 
         public string Name
         {
-            get { return Get(() => (IsLiked ? "<3 " : "") + _sessionPlace.Session.Name); }
+            get { return Get(() => _sessionPlace.Session.Name); }
         }
 
         public Color TextColor
