@@ -22,7 +22,7 @@ namespace Correspondence.MobileStorage
             var myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             _correspondencePath = Path.Combine(myDocuments, "Correspondence.db");
 
-            File.Delete(_correspondencePath);
+            //File.Delete(_correspondencePath);
             if (!File.Exists(_correspondencePath))
             {
                 using (var db = new SQLiteConnection(_correspondencePath))

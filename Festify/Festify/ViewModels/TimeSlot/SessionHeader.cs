@@ -34,6 +34,11 @@ namespace Festify.ViewModels.TimeSlot
             get { return Get(() => (IsLiked ? "<3 " : "") + _sessionPlace.Session.Name); }
         }
 
+        public Color TextColor
+        {
+            get { return Get(() => IsLiked ? Color.Accent : Color.Default); }
+        }
+
         public string Speaker
         {
             get { return Get(() => _sessionPlace.Session.Speaker.Name); }

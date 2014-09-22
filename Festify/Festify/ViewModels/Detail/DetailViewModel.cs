@@ -65,6 +65,16 @@ namespace Festify.ViewModels.Detail
             get { return Get(() => _session.Speaker.Bio.Value.JoinSegments()); }
         }
 
+        public string LikeLabel
+        {
+            get
+            {
+                return _individual.LikedSessions.Any(s => s.Session == _session)
+                    ? "Unlike"
+                    : "Like";
+            }
+        }
+
         public ICommand Like
         {
             get
@@ -74,16 +84,29 @@ namespace Festify.ViewModels.Detail
                     {
                         _individual.Community.Perform(async delegate
                         {
-                            var attendee = (await _individual.Attendees.EnsureAsync()).FirstOrDefault();
-                            if (attendee == null)
-                            {
-                                var conference = await _session.Conference.EnsureAsync();
-                                var identifier = Guid.NewGuid().ToString();
-                                attendee = await _individual.Community.AddFactAsync(new Attendee(conference, identifier));
-                                await _individual.Community.AddFactAsync(new IndividualAttendee(_individual, attendee));
-                            }
+                            var likedSessions = (await _individual.LikedSessions.EnsureAsync())
+                                .Where(s => s.Session == _session);
 
-                            await _individual.Community.AddFactAsync(new LikeSession(attendee, _session));
+                            if (likedSessions.Any())
+                            {
+                                foreach (var likedSession in likedSessions)
+                                {
+                                    await likedSession.Community.AddFactAsync(new UnlikeSession(likedSession));
+                                }
+                            }
+                            else
+                            {
+                                var attendee = (await _individual.Attendees.EnsureAsync()).FirstOrDefault();
+                                if (attendee == null)
+                                {
+                                    var conference = await _session.Conference.EnsureAsync();
+                                    var identifier = Guid.NewGuid().ToString();
+                                    attendee = await _individual.Community.AddFactAsync(new Attendee(conference, identifier));
+                                    await _individual.Community.AddFactAsync(new IndividualAttendee(_individual, attendee));
+                                }
+
+                                await _individual.Community.AddFactAsync(new LikeSession(attendee, _session));
+                            }
                         });
                     });
             }

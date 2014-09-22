@@ -28,6 +28,7 @@ namespace Festify.Views.TimeSlot
             {
                 ImageCell cell = new ImageCell();
                 cell.SetBinding<SessionHeader>(ImageCell.TextProperty, s => s.Name);
+                cell.SetBinding<SessionHeader>(ImageCell.TextColorProperty, s => s.TextColor);
                 cell.SetBinding<SessionHeader>(ImageCell.DetailProperty, s => s.Speaker);
                 cell.SetBinding<SessionHeader>(ImageCell.ImageSourceProperty, s => s.Image);
                 return cell;

@@ -61,7 +61,7 @@ namespace Festify.Views.Detail
                 }
             }, 0, 2, 2, 3);
 
-            Content = content;
+            Content = new ScrollView { Content = content };
         }
 
         private static Label HeaderFor(Expression<Func<DetailViewModel, object>> property)
@@ -86,6 +86,7 @@ namespace Festify.Views.Detail
         {
             Button button = new Button();
             button.Text = "Like";
+            button.SetBinding<DetailViewModel>(Button.TextProperty, vm => vm.LikeLabel);
             button.SetBinding<DetailViewModel>(Button.CommandProperty, vm => vm.Like);
             return button;
         }
