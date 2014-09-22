@@ -26,7 +26,7 @@ namespace Festify.ViewModels.TimeSlot
 
         public ImageSource Image
         {
-            get { return Get(() => ImageSource.FromUri(new Uri(_sessionPlace.Session.Speaker.ImageUrl))); }
+            get { return Get(() => ImageSourceFrom(_sessionPlace.Session.Speaker.ImageUrl)); }
         }
 
         public string Name
@@ -62,6 +62,14 @@ namespace Festify.ViewModels.TimeSlot
             {
                 return _individual.LikedSessions.Any(s => s.Session == _sessionPlace.Session);
             }
+        }
+
+        private ImageSource ImageSourceFrom(string url)
+        {
+            if (String.IsNullOrEmpty(url))
+                return null;
+            else
+                return ImageSource.FromUri(new Uri(url));
         }
     }
 }

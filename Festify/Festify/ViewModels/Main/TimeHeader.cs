@@ -69,8 +69,8 @@ namespace Festify.ViewModels.Main
                 return Get(delegate()
                 {
                     return _sessionPlaces.Count() != 1
-                        ? ImageSource.FromUri(new Uri("http://icons.iconarchive.com/icons/gordon-irving/iWork-10/512/keynote-off-icon.png"))
-                        : ImageSource.FromUri(new Uri(_sessionPlaces.Single().Session.Speaker.ImageUrl.Value));
+                        ? ImageSourceFrom("http://icons.iconarchive.com/icons/gordon-irving/iWork-10/512/keynote-off-icon.png")
+                        : ImageSourceFrom(_sessionPlaces.Single().Session.Speaker.ImageUrl.Value);
                 });
             }
         }
@@ -113,6 +113,14 @@ namespace Festify.ViewModels.Main
         {
             var hash = _time.GetHashCode();
             System.Diagnostics.Debug.WriteLine(String.Format("Disposed {0}", hash));
+        }
+
+        private ImageSource ImageSourceFrom(string url)
+        {
+            if (String.IsNullOrEmpty(url))
+                return null;
+            else
+                return ImageSource.FromUri(new Uri(url));
         }
     }
 }

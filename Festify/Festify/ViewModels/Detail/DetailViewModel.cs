@@ -27,7 +27,7 @@ namespace Festify.ViewModels.Detail
 
         public ImageSource Image
         {
-            get { return Get(() => ImageSource.FromUri(new Uri(_session.Speaker.ImageUrl.Value))); }
+            get { return Get(() => ImageSourceFrom(_session.Speaker.ImageUrl.Value)); }
         }
 
         public string Time
@@ -87,6 +87,14 @@ namespace Festify.ViewModels.Detail
                         });
                     });
             }
+        }
+
+        private ImageSource ImageSourceFrom(string url)
+        {
+            if (String.IsNullOrEmpty(url))
+                return null;
+            else
+                return ImageSource.FromUri(new Uri(url));
         }
     }
 }
