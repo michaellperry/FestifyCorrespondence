@@ -103,16 +103,8 @@ namespace Correspondence.MobileStorage
         {
             using (var db = new SQLiteConnection(_correspondencePath))
             {
-                var factRecords = db.Table<FactRecord>()
-                    .Where(f => f.ID == id.key);
-
-                foreach (var factRecord in factRecords)
-                {
-                    return Task.FromResult(LoadMemento(factRecord, db).Memento);
-                }
+                return Task.FromResult(LoadMementoById(id.key, db).Memento);
             }
-
-            throw new CorrespondenceException(String.Format("Failed to load fact {0}.", id.key));
         }
 
         public Task<FactID?> GetIDAsync(string factName)
@@ -375,9 +367,17 @@ namespace Correspondence.MobileStorage
             return true;
         }
 
-        private IdentifiedFactMemento LoadMementoById(long id, SQLiteConnection db)
+        private IdentifiedFactMemento LoadMementoById(long factId, SQLiteConnection db)
         {
-            throw new NotImplementedException();
+            var factRecords = db.Table<FactRecord>()
+                                .Where(f => f.ID == factId);
+
+            foreach (var factRecord in factRecords)
+            {
+                return LoadMemento(factRecord, db);
+            }
+
+            throw new CorrespondenceException(String.Format("Failed to load fact {0}.", factId));
         }
 
         private IdentifiedFactMemento LoadMemento(FactRecord factRecord, SQLiteConnection db)
