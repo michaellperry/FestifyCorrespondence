@@ -14,6 +14,7 @@ namespace Festify.WinPhone
             Forms.Init();
             var storage = new FileStreamStorageStrategy();
             Content = Festify.App.GetMainPage(new DispatchAdapter(), storage).ConvertPageToUIElement(this);
+            this.SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
         }
     }
 }
