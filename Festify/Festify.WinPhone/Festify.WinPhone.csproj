@@ -117,6 +117,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Festify.WinPhone_2014_10_02_17_21_00.sap" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
