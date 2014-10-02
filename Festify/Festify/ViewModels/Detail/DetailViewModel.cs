@@ -35,6 +35,7 @@ namespace Festify.ViewModels.Detail
             get
             {
                 return Get(() => _session.CurrentSessionPlaces
+                    .Where(sp => sp.Place.PlaceTime.Start.Year >= 2014)
                     .Select(sp => sp.Place.PlaceTime.Start.AddHours(-5).ToShortTimeString())
                     .FirstOrDefault());
             }

@@ -172,8 +172,9 @@
     <Reference Include="UpdateControls.Correspondence.BinaryHTTPClient.Notification">
       <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\wp8\UpdateControls.Correspondence.BinaryHTTPClient.Notification.dll</HintPath>
     </Reference>
-    <Reference Include="UpdateControls.Correspondence.Data">
-      <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\wp80\UpdateControls.Correspondence.Data.dll</HintPath>
+    <Reference Include="UpdateControls.Correspondence.Data, Version=2.2.0.0, Culture=neutral, PublicKeyToken=19e83a8289e31a8f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\wp8\UpdateControls.Correspondence.Data.dll</HintPath>
     </Reference>
     <Reference Include="UpdateControls.Correspondence.FileStream">
       <HintPath>..\..\packages\Correspondence.App.Core.2.2.1.0\lib\wp8\UpdateControls.Correspondence.FileStream.dll</HintPath>

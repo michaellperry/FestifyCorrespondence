@@ -1,6 +1,7 @@
 ﻿using Microsoft.Phone.Controls;
 using UpdateControls.Correspondence.Memory;
 using Xamarin.Forms;
+using UpdateControls.Correspondence.FileStream;
 
 namespace Festify.WinPhone
 {
@@ -11,7 +12,8 @@ namespace Festify.WinPhone
             InitializeComponent();
 
             Forms.Init();
-            Content = Festify.App.GetMainPage(new DispatchAdapter(), new MemoryStorageStrategy()).ConvertPageToUIElement(this);
+            var storage = new FileStreamStorageStrategy();
+            Content = Festify.App.GetMainPage(new DispatchAdapter(), storage).ConvertPageToUIElement(this);
         }
     }
 }
