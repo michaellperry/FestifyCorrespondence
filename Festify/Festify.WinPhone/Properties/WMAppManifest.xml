@@ -4,6 +4,8 @@
   <App xmlns="" ProductID="{a7a0365c-caa8-45b5-a697-4abc758db0c1}" Title="Dallas TechFest 2014" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Michael L Perry" Description="Dallas TechFest brings the best and brightest speakers from around the country to provide one day of incredible, densely packed content, focused on increasing your team’s ability to successfully deliver projects. October 10, 2014" Publisher="Faceted Worlds, LLC" PublisherID="{a508872f-75ce-4024-adf6-97965fe03a5b}">
     <IconPath IsRelative="true" IsResource="false">Assets\DTFApplicationIcon.png</IconPath>
     <Capabilities>
+      <Capability Name="ID_CAP_SENSORS" />
+      <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
       <Capability Name="ID_CAP_NETWORKING" />
     </Capabilities>
     <Tasks>
