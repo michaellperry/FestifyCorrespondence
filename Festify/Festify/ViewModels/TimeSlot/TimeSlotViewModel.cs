@@ -34,6 +34,9 @@ namespace Festify.ViewModels.TimeSlot
             {
                 return GetCollection(() =>
                     from sessionPlace in _time.AvailableSessions
+                    where sessionPlace.Session.Name.Candidates.Any() &&
+                        sessionPlace.Session.Speaker.Name.Candidates.Any() &&
+                        sessionPlace.Session.Speaker.ImageUrl.Candidates.Any()
                     orderby sessionPlace.Session.Name.Value
                     select new SessionHeader(sessionPlace, _individual));
             }
