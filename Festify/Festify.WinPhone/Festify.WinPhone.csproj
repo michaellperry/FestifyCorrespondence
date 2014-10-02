@@ -128,6 +128,9 @@
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\DTFApplicationIcon.png" />
+    <Content Include="Assets\DTFTileMedium.png" />
+    <Content Include="Assets\DTFTileSmall.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
