@@ -13,16 +13,33 @@ namespace Festify.ViewModels.Main
     {
         private readonly Time _time;
         private readonly Individual _individual;
-
-        private DependentList<SessionPlace> _sessionPlaces;
+        private readonly string _title;
+        private readonly string _roomNumber;
+        private readonly ImageSource _image;
 
         public TimeHeader(Time time, Individual individual)
         {
             _time = time;
             _individual = individual;
 
-            _sessionPlaces = new DependentList<SessionPlace>(() =>
-                _time.AvailableSessions.Where(IsLiked));
+            var sessionPlaces = _time.AvailableSessions.Where(IsLiked).ToList();
+            var sessionName = sessionPlaces.Count() != 1
+                ? "Breakout Session"
+                : sessionPlaces.Single().Session.Name.Value;
+            _title = String.Format("{0}: {1}",
+                _time.Start.AddHours(-5).ToShortTimeString(),
+                sessionName);
+
+            if (sessionPlaces.Count() == 0)
+                _roomNumber = "Tap to select";
+            else if (sessionPlaces.Count() > 1)
+                _roomNumber = "More than one selected";
+            else
+                _roomNumber = sessionPlaces.Single().Place.Room.RoomNumber.Value;
+
+            _image = sessionPlaces.Count() != 1
+                ? ImageSourceFrom("http://icons.iconarchive.com/icons/gordon-irving/iWork-10/512/keynote-off-icon.png")
+                : ImageSourceFrom(sessionPlaces.Single().Session.Speaker.ImageUrl.Value);
         }
 
         public Time Time
@@ -32,47 +49,17 @@ namespace Festify.ViewModels.Main
 
         public string Title
         {
-            get
-            {
-                return Get(delegate()
-                {
-                    var sessionName = _sessionPlaces.Count() != 1
-                        ? "Breakout Session"
-                        : _sessionPlaces.Single().Session.Name.Value;
-                    return String.Format("{0}: {1}",
-                        _time.Start.AddHours(-5).ToShortTimeString(),
-                        sessionName);
-                });
-            }
+            get { return _title; }
         }
 
         public string RoomNumber
         {
-            get
-            {
-                return Get(delegate()
-                {
-                    if (_sessionPlaces.Count() == 0)
-                        return "Tap to select";
-                    else if (_sessionPlaces.Count() > 1)
-                        return "More than one selected";
-                    else
-                        return _sessionPlaces.Single().Place.Room.RoomNumber.Value;
-                });
-            }
+            get { return _roomNumber; }
         }
 
         public ImageSource Image
         {
-            get
-            {
-                return Get(delegate()
-                {
-                    return _sessionPlaces.Count() != 1
-                        ? ImageSourceFrom("http://icons.iconarchive.com/icons/gordon-irving/iWork-10/512/keynote-off-icon.png")
-                        : ImageSourceFrom(_sessionPlaces.Single().Session.Speaker.ImageUrl.Value);
-                });
-            }
+            get { return _image; }
         }
 
         public override bool Equals(object obj)
@@ -86,12 +73,15 @@ namespace Festify.ViewModels.Main
 
             return
                 Object.Equals(this._time, that._time) &&
-                Object.Equals(this._individual, that._individual);
+                Object.Equals(this._individual, that._individual) &&
+                Object.Equals(this._title, that._title) &&
+                Object.Equals(this._roomNumber, that._roomNumber) &&
+                Object.Equals(this._image, that._image);
         }
 
         public override int GetHashCode()
         {
-            return _time.GetHashCode() + _individual.GetHashCode();
+            return _time.GetHashCode() + _individual.GetHashCode() + _title.GetHashCode() + _roomNumber.GetHashCode() + _image.GetHashCode();
         }
 
 
