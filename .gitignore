@@ -1,6 +1,7 @@
 packages/
 NuGet/Core/lib/
 SubmissionInfo/
+NuGet/
 
 #ignore thumbnails created by windows
 Thumbs.db
