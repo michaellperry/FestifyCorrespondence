@@ -1,14 +1,8 @@
-﻿using System;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-
+using Correspondence.MobileStorage;
 using Xamarin.Forms.Platform.Android;
-using UpdateControls.Correspondence.Memory;
 
 namespace Festify.Droid
 {
@@ -21,7 +15,7 @@ namespace Festify.Droid
 
             Xamarin.Forms.Forms.Init(this, bundle);
 
-            SetPage(App.GetMainPage(new DispatchAdapter(this), new MemoryStorageStrategy()));
+            SetPage(App.GetMainPage(new DispatchAdapter(this), new MobileStorageStrategy()));
         }
     }
 }
