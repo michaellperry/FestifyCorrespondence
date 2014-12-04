@@ -17,11 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Festify.DallasTechFest.2014
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Correspondence.MobileStorage.Android", "Correspondence.MobileStorage.Android\Correspondence.MobileStorage.Android.csproj", "{7327F8DB-029C-4E61-A509-68C1AFB900A0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5FA2339-0AB6-49AF-93FC-B28337EECF9B}"
-	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Correspondence.MobileStorage.WindowsPhone", "Correspondence.MobileStorage.WindowsPhone\Correspondence.MobileStorage.WindowsPhone.csproj", "{AC35CFBD-3640-462B-AD2A-D4A94B26F92F}"
 EndProject
 Global
@@ -324,8 +319,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
