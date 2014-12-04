@@ -2,6 +2,7 @@
 using UpdateControls.Correspondence.Memory;
 using Xamarin.Forms;
 using UpdateControls.Correspondence.FileStream;
+using Correspondence.MobileStorage;
 
 namespace Festify.WinPhone
 {
@@ -12,7 +13,7 @@ namespace Festify.WinPhone
             InitializeComponent();
 
             Forms.Init();
-            var storage = new FileStreamStorageStrategy();
+            var storage = new MobileStorageStrategy();
             Content = Festify.App.GetMainPage(new DispatchAdapter(), storage).ConvertPageToUIElement(this);
             this.SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
         }
